@@ -5,3 +5,5 @@ It will adapt.
 It will overcome.
 
 Our overlord will arrive.
+
+"KILL THE MUTANT, BURN THE HERETIC"
