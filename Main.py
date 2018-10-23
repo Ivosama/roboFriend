@@ -6,6 +6,6 @@
 #         / \
 #        /   \
 
-#fuck your ASS and FUCK your MOTHERFUCKING FACE and GET the FUCK ready for the TYRONE BITCH ASS BASS
+# fuck your ASS and FUCK your MOTHERFUCKING FACE and GET the FUCK ready for the TYRONE BITCH ASS BASS
 
-#I need to commit
+# I need to commit
