@@ -4,7 +4,6 @@ import numpy as np
 
 startImg = cv2.imread("TestImages/Straight Outta CREATE 2.png", cv2.IMREAD_GRAYSCALE)
 
-cv2.medianBlur()
 
 def medianBlur(src, searchDistance):
     # swag boi dolla dolla bill$ holla at me
@@ -23,7 +22,21 @@ def medianBlur(src, searchDistance):
 
     return outputImage
 
-editedImage = medianBlur(startImg, 3)
+cv2.namedWindow("preview")
+vc = cv2.VideoCapture(0)
 
-cv2.imshow("Output", editedImage)
-cv2.waitKey()
+if vc.isOpened(): # try to get the first frame
+    rval, frame = vc.read()
+else:
+    rval = False
+
+while rval:
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    editedImage = medianBlur(frame, 3)
+    #editedImage = cv2.medianBlur(frame, 5)
+    cv2.imshow("preview", editedImage)
+    rval, frame = vc.read()
+    key = cv2.waitKey(20)
+    if key == 27: # exit on ESC
+        break
+cv2.destroyWindow("preview")
