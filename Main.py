@@ -12,6 +12,8 @@ from picamera import PiCamera
 import time
 import cv2
 import io
+import cum_hist
+import histogram
 
 # Create a memory stream so photos doesn't need to be saved in a file
 stream = io.BytesIO()
@@ -19,7 +21,7 @@ stream = io.BytesIO()
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
 camera.resolution = (640, 480)
-camera.color_effects = (128, 128)  # his sets the channels to capture only black and white
+camera.color_effects = (128, 128)  # this sets the channels to capture only black and white
 camera.framerate = 32
 rawCapture = PiRGBArray(camera, size=(640, 480))
 
