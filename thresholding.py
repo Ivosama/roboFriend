@@ -23,7 +23,6 @@ def thresholding(img, stX, stY, endX, endY):
                 bI[i, j] = 255
             elif img.item(i, j) < TVa:
                 bI[i, j] = 0
-            q += 1
 
     cv2.imshow('Thresholded Image', bI)
     print(TVa)
