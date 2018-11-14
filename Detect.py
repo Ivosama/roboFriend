@@ -1,4 +1,5 @@
 
+
 class BlobDetector:
 
 
@@ -6,11 +7,57 @@ class BlobDetector:
     import numpy as np
     import sys
 
+    h = 2
+    w = 2
+
+    img = np.zeros((h, w, 1), np.uint8)
+
+    objectImage = np.zeros((h, w, 1), np.uint8)
+
+    #def __init__(self):
+
+
     def setImage(self, image):
         self.img = image
         self.h, self.w = img.shape
         self.objectImage = np.zeros((h, w, 1), np.uint8)
 
+
+    """
+    def getBlobID(self, image, xMin, xMax, yMin, yMax):
+        
+        currentID = 0
+        
+        blob1Counter = 0
+        blob2Counter = 0
+        blob3Counter = 0
+        
+        for y in range(yMin, yMax):
+            for x in range(xMin, xMax):
+                if image[y,x] != 0:
+    """
+
+    def getCenterOfBlob(self, image, blobID):
+        h, w = image.shape
+
+        xMin = w
+        xMax = 0
+        yMin = h
+        yMax = 0
+
+        for y in range(0, h):
+            for x in range(0, w):
+                if image[y,x] == blobID:
+                    if x < xMin:
+                        xMin = x
+                    if x > xMax:
+                        xMax = x
+                    if y < yMin:
+                        yMin = y
+                    if y > yMax:
+                        yMax = y
+
+        return (xMin + xMax) / 2, (yMin + yMax) / 2
 
     def thImage(self, img, th):
         height, width = img.shape
