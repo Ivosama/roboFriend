@@ -24,5 +24,6 @@ def th(img, stX, stY, endX, endY, thMod):
             elif img.item(i, j) < TVa:
                 bI[i, j] = 255
 
-    cv2.imshow('Thresholded Image', bI)
+    #cv2.imshow('Thresholded Image', bI)
     print(TVa)
+    return bI
