@@ -37,6 +37,24 @@ class BlobDetector:
                 if image[y,x] != 0:
     """
 
+    def getBlobIDsInArea(self, image, yMin, yMax, xMin, xMax):
+    objectCounter = 0
+    objectIDs = [0]
+
+    for y in range (yMin, yMax):
+        for x in range (xMin, xMax):
+            currentID = image[y, x]
+            if currentID != 0:
+                isInArray = 0
+                for i in range(0, objectIDs):
+                    if currentID == objectIDs[i]:
+                        isInArray = 1
+
+                if isInArray == 0:
+                    objectIDs.append(currentID)
+
+    return objectIDs
+    
     def getCenterOfBlob(self, image, blobID):
         h, w = image.shape
 
