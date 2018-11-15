@@ -40,7 +40,7 @@ class BlobDetector:
                 currentID = image[y, x]
                 if currentID != 0:
                     isInArray = 0
-                    for i in range(0, objectIDs):
+                    for i in range(0, len(objectIDs)):
                         if currentID == objectIDs[i]:
                             isInArray = 1
 
@@ -50,7 +50,8 @@ class BlobDetector:
         return objectIDs
 
     def getCenterOfBlob(self, image, blobID):
-        h, w = image.shape
+        h = image.shape[0]
+        w = image.shape[1]
 
         xMin = w
         xMax = 0
@@ -112,28 +113,28 @@ class BlobDetector:
 
         self.img[y, x] = 0
         self.objectImage[y, x] = objectNumber
-        searchDistance = 250
+        searchDistance = 1
 
         if x + searchDistance < xMax:
-            right = self.img[y, x + searchDistance]
+            right = self.img[y, x + 1]
             if right <= color + colorTH:
                 if right >= color - colorTH:
-                    self.checkConnectivity(y, yMin, yMax, x + searchDistance, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y, yMin, yMax, x + 1, xMin, xMax, color, colorTH, objectNumber)
 
         if y + searchDistance < yMax:
-            bottom = self.img[y + searchDistance, x]
+            bottom = self.img[y + 1, x]
             if bottom <= color + colorTH:
                 if bottom >= color - colorTH:
-                    self.checkConnectivity(y + searchDistance, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y + 1, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
 
         if x - searchDistance > xMin:
-            left = self.img[y, x - searchDistance]
+            left = self.img[y, x - 1]
             if left <= color + colorTH:
                 if left >= color - colorTH:
-                    self.checkConnectivity(y, yMin, yMax, x - searchDistance, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y, yMin, yMax, x - 1, xMin, xMax, color, colorTH, objectNumber)
 
         if y - searchDistance > yMin:
-            top = self.img[y - searchDistance, x]
+            top = self.img[y - 1, x]
             if top <= color + colorTH:
                 if top >= color - colorTH:
-                    self.checkConnectivity(y - searchDistance, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y - 1, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
