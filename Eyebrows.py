@@ -48,12 +48,9 @@ class Eyebrows:
         xStart = int(xCenter - (sizeX/2))
         xEnd = int(xCenter + (sizeX/2))
 
-
         img = self.placeBarsOnBrows(img, yMin, yMax, xMin, xMax, 50, 5)
 
-        tempImg = img
-
-        objectImg = blobDetector.getObjectImage(tempImg, yStart, yEnd, xStart, xEnd, 0, 0)
+        objectImg = blobDetector.getObjectImage(img, yStart, yEnd, xStart, xEnd, 0, 0)
         objects = blobDetector.getBlobIDsInArea(objectImg, yStart, yEnd, xStart, xEnd)
         objects.pop(0)
         """
@@ -63,10 +60,11 @@ class Eyebrows:
 
             for i in range(0, len(objects)):
                 print(objects[i])
-        objects = blobDetector.getClosestBlobs(img, objects, yCenter, xCenter, 4)
+        objects = blobDetector.getClosestBlobs(img, objects, yMin, yMax, xMin, xMax, yCenter, xCenter, 4)
         if objects:
 
             for i in range(0, len(objects)):
+
                 print(objects[i])
 
         return img

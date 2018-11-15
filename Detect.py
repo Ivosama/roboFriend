@@ -49,7 +49,7 @@ class BlobDetector:
 
         return objectIDs
 
-    def getClosestBlobs(self, img, blobs, pointY, pointX, amount):
+    def getClosestBlobs(self, img, blobs, yMin, yMax, xMin, xMax, pointY, pointX, amount):
 
         furthestID = 0
         furthestDist = 0
@@ -57,7 +57,7 @@ class BlobDetector:
         if blobs:
             if len(blobs) > amount:
                 for i in range (0, len(blobs)):
-                    x, y = self.getCenterOfBlob(img, i)
+                    x, y = self.getCenterOfBlob(img, i, yMin, yMax, xMin, xMax)
                     distX = abs(pointX - x)
                     distY = abs(pointY - y)
                     dist = distX + distY
@@ -66,7 +66,7 @@ class BlobDetector:
                         furthestDist = dist
                         furthestID = i
                 blobs.pop(furthestID)
-                blobs = self.getClosestBlobs(img, blobs, pointY, pointX, amount)
+                blobs = self.getClosestBlobs(img, blobs, yMin, yMax, xMin, xMax, pointY, pointX, amount)
 
         return blobs
 
@@ -88,17 +88,10 @@ class BlobDetector:
             return blobs
 
 
-    def getCenterOfBlob(self, image, blobID):
-        h = image.shape[0]
-        w = image.shape[1]
+    def getCenterOfBlob(self, image, blobID, yMin, yMax, xMin, xMax):
 
-        xMin = w
-        xMax = 0
-        yMin = h
-        yMax = 0
-
-        for y in range(0, h):
-            for x in range(0, w):
+        for y in range(yMin, yMax):
+            for x in range(yMin, yMax):
                 if image[y, x] == blobID:
                     if x < xMin:
                         xMin = x
