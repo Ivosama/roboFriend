@@ -49,6 +49,45 @@ class BlobDetector:
 
         return objectIDs
 
+    def getClosestBlobs(self, img, blobs, pointY, pointX, amount):
+
+        furthestID = 0
+        furthestDist = 0
+
+        if blobs:
+            if len(blobs) > amount:
+                for i in range (0, len(blobs)):
+                    x, y = self.getCenterOfBlob(img, i)
+                    distX = abs(pointX - x)
+                    distY = abs(pointY - y)
+                    dist = distX + distY
+
+                    if dist > furthestDist:
+                        furthestDist = dist
+                        furthestID = i
+                blobs.pop(furthestID)
+                blobs = self.getClosestBlobs(img, blobs, pointY, pointX, amount)
+
+        return blobs
+
+
+
+    def eliminateFurthestBlob(self, img, blobs, pointY, pointX):
+        if len(blobs) > 4:
+            furthestBLob = 0
+            furthestDist = 0
+            for i in range (0, len(blobs)):
+                x, y = self.getCenterOfBlob(img, blobs[i])
+                dist = int(abs((x + y) - (pointX + pointY)))
+                if dist > furthestDist:
+                    furthestDist = dist
+                    furthestBLob = i
+            blobs.pop(furthestBLob)
+            return blobs
+        else:
+            return blobs
+
+
     def getCenterOfBlob(self, image, blobID):
         h = image.shape[0]
         w = image.shape[1]
@@ -70,7 +109,7 @@ class BlobDetector:
                     if y > yMax:
                         yMax = y
 
-        return (xMin + xMax) / 2, (yMin + yMax) / 2
+        return int((xMin + xMax) / 2), int((yMin + yMax) / 2)
 
     def thImage(self, img, th):
         height, width = img.shape
@@ -93,7 +132,7 @@ class BlobDetector:
         for y in range(yMin, yMax):
             for x in range(xMin, xMax):
                 if self.img[y, x] > blackTH:
-                    objectCounter += 20
+                    objectCounter += 1
                     self.checkConnectivity(y, yMin, yMax, x, xMin, xMax, self.img[y, x], colorTH, objectCounter)
 
         return self.objectImage
