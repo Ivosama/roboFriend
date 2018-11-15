@@ -115,25 +115,25 @@ class BlobDetector:
         searchDistance = 250
 
         if x + searchDistance < xMax:
-            right = self.img[y, x + 1]
+            right = self.img[y, x + searchDistance]
             if right <= color + colorTH:
                 if right >= color - colorTH:
-                    self.checkConnectivity(y, yMin, yMax, x + 1, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y, yMin, yMax, x + searchDistance, xMin, xMax, color, colorTH, objectNumber)
 
         if y + searchDistance < yMax:
-            bottom = self.img[y + 1, x]
+            bottom = self.img[y + searchDistance, x]
             if bottom <= color + colorTH:
                 if bottom >= color - colorTH:
-                    self.checkConnectivity(y + 1, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y + searchDistance, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
 
         if x - searchDistance > xMin:
-            left = self.img[y, x - 1]
+            left = self.img[y, x - searchDistance]
             if left <= color + colorTH:
                 if left >= color - colorTH:
-                    self.checkConnectivity(y, yMin, yMax, x - 1, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y, yMin, yMax, x - searchDistance, xMin, xMax, color, colorTH, objectNumber)
 
         if y - searchDistance > yMin:
-            top = self.img[y - 1, x]
+            top = self.img[y - searchDistance, x]
             if top <= color + colorTH:
                 if top >= color - colorTH:
-                    self.checkConnectivity(y - 1, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y - searchDistance, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
