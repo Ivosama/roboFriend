@@ -7,9 +7,6 @@ import Detect
 import sys
 
 
-
-
-
 class Eyebrows:
 
     def placeBarsOnBrows(self, img, yMin, yMax, xMin, xMax, sizeY, sizeX):
@@ -48,7 +45,7 @@ class Eyebrows:
         xStart = int(xCenter - (sizeX/2))
         xEnd = int(xCenter + (sizeX/2))
 
-        img = self.placeBarsOnBrows(img, yMin, yMax, xMin, xMax, 50, 5)
+        img = self.placeBarsOnBrows(img, yMin, yMax, xMin, xMax, 40, 5)
 
         objectImg = blobDetector.getObjectImage(img, yStart, yEnd, xStart, xEnd, 0, 0)
         objects = blobDetector.getBlobIDsInArea(objectImg, yStart, yEnd, xStart, xEnd)
@@ -56,10 +53,7 @@ class Eyebrows:
         """
         
         """
-        if objects:
 
-            for i in range(0, len(objects)):
-                print(objects[i])
         objects = blobDetector.getClosestBlobs(img, objects, yMin, yMax, xMin, xMax, yCenter, xCenter, 4)
         if objects:
 
@@ -92,7 +86,7 @@ while True:
         cv2.rectangle(gray, (x, y), (x + w, y + h), (255, 0, 0), 2)
         #editedImage = gray
         editedImage = MedianGBlur.medianBlur(gray, editedImage, 3, x, y, w, h)
-        editedImage = blobDetector.thImage(editedImage, 80)
+        editedImage = blobDetector.thImage(editedImage, 40)
         editedImage = brows.getStateOfBrows(editedImage, blobDetector, y, y+h, x, x+h)
         #editedImage = brows.placeBarsOnBrows(editedImage, y, y + h, x, x + w, 50, 10)
         #editedImage = thresholding.th(editedImage, x, y, (w + x), (h + y), 0)
@@ -101,8 +95,6 @@ while True:
     cv2.imshow("imshow", editedImage)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-
 
 cap.release()
 cv2.destroyAllWindows()
