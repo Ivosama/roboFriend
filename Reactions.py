@@ -7,20 +7,50 @@ class Reactions:
     ba = collections.deque(maxlen=memlen)   #brow memory
     MOUTH = 'smile'
     BROW = 'neutral'
+    ma.append(MOUTH)    #Put these where the mouth / brow are being detected
+    ba.append(BROW)
+
     def getReaction(self):
-        Reactions.ma.append(Reactions.MOUTH)
-        Reactions.ba.append(Reactions.BROW)
-        # get user brows
-        if Reactions.MOUTH == 'smile':
-            if Reactions.BROW == 'neutral':
-                #neutral-smile reactions below based on robot state
-        elif Reactions.MOUTH == 'neutral':
-            if Reactions.BROW == 'neutral':
+        m = Reactions.getMouth
+        b = Reactions.getBrow
+        if m == 'smile':
+            if b == 'smile':
+                return      #Replace each of these returns with separate functions, or just more if with robot feelings
+            elif b == 'neutral':
+                return
+            elif b == 'frown':
+                return
+        elif m == 'neutral':
+            if b == 'smile':
+                return
+            elif b == 'neutral':
+                return
+            elif b == 'frown':
+                return
+        elif m == 'frown':
+            if b == 'smile':
+                return
+            elif b == 'neutral':
+                return
+            elif b == 'frown':
                 return
 
-    def getFace(self):
 
+    def getMouth(self):
+        if Reactions.ma.count('smile') >= Reactions.ma.count('neutral') & Reactions.ma.count('smile') >= Reactions.ma.count('frown'):
+            return 'smile'
+        if Reactions.ma.count('neutral') >= Reactions.ma.count('frown') & Reactions.ma.count('neutral') >= Reactions.ma.count('smile'):
+            return 'neutral'
+        if Reactions.ma.count('frown') >= Reactions.ma.count('neutral') & Reactions.ma.count('frown') >= Reactions.ma.count('smile'):
+            return 'frown'
 
+    def getBrow(self):  ##OBVIOUSLY NEEDS TO GET CHANGED TO WHATEVER WORDS WE USE FOR BROWS
+        if Reactions.ma.count('smile') >= Reactions.ma.count('neutral') & Reactions.ma.count('smile') >= Reactions.ma.count('frown'):
+            return 'smile'
+        if Reactions.ma.count('neutral') >= Reactions.ma.count('frown') & Reactions.ma.count('neutral') >= Reactions.ma.count('smile'):
+            return 'neutral'
+        if Reactions.ma.count('frown') >= Reactions.ma.count('neutral') & Reactions.ma.count('frown') >= Reactions.ma.count('smile'):
+            return 'frown'
 
 #Mouth states: laugh, smile, neutral, frown, speaking?
 #Brow states:
