@@ -9,7 +9,7 @@ cap = cv2.VideoCapture(0)
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 blobDetector = Detect.BlobDetector()
-sys.setrecursionlimit(3000)
+sys.setrecursionlimit(5000)
 
 while True:
     ret, frame = cap.read()
@@ -21,9 +21,10 @@ while True:
 
     for (x, y, w, h) in faces:
         cv2.rectangle(gray, (x, y), (x + w, y + h), (255, 0, 0), 2)
-        editedImage = MedianGBlur.medianBlur(gray, editedImage, 3, x, y, w, h)
-        editedImage = thresholding.th(editedImage, x, y, (w + x), (h + y), 0)
-        editedImage = blobDetector.getObjectImage(editedImage, y, y+h, x, x+w, 50, 100)
+        #editedImage = MedianGBlur.medianBlur(gray, editedImage, 3, x, y, w, h)
+        editedImage = thresholding.th(gray, x, y, (w+x), (h+y), -45)
+        #editedImage = thresholding.thHSL(frame, x, y, (w + x), (h + y), 0)
+        #editedImage = blobDetector.getObjectImage(editedImage, y, y+h, x, x+w, 50, 100)
 
     cv2.imshow("imshow", editedImage)
     if cv2.waitKey(1) & 0xFF == ord('q'):
