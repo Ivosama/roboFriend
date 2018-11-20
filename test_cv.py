@@ -4,12 +4,14 @@ import thresholding
 import MedianGBlur
 import Detect
 import sys
+import eyes
 
 cap = cv2.VideoCapture(0)
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 blobDetector = Detect.BlobDetector()
-sys.setrecursionlimit(3000)
+eyes = eyes.Eyes()
+sys.setrecursionlimit(5000)
 
 while True:
     ret, frame = cap.read()
@@ -20,12 +22,14 @@ while True:
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
     for (x, y, w, h) in faces:
-        cv2.rectangle(gray, (x, y), (x + w, y + h), (255, 0, 0), 2)
-        editedImage = MedianGBlur.medianBlur(gray, editedImage, 3, x, y, w, h)
-        editedImage = thresholding.th(editedImage, x, y, (w + x), (h + y), 0)
-        editedImage = blobDetector.getObjectImage(editedImage, y, y+h, x, x+w, 50, 100)
 
-    cv2.imshow("imshow", editedImage)
+        editedImage = eyes.drawSquaresOnEyes(gray, x, y, w, h)
+        #editedImage = MedianGBlur.medianBlur(gray, editedImage, 3, x, y, w, h)
+        #editedImage = thresholding.th(editedImage, x, y, (w + x), (h + y), 40)
+        #editedImage = blobDetector.thImage(editedImage, 40)
+        #editedImage = blobDetector.getObjectImage(editedImage, y, y+h, x, x+w, 50, 100)
+
+    cv2.imshow("imshow", gray)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
