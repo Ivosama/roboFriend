@@ -22,6 +22,7 @@ while True:
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
     for (x, y, w, h) in faces:
+        cv2.rectangle(editedImage, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
 
         editedImage = eyes.drawSquaresOnEyes(gray, x, y, w, h)
         #editedImage = MedianGBlur.medianBlur(gray, editedImage, 3, x, y, w, h)
