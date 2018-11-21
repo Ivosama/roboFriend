@@ -90,19 +90,26 @@ class BlobDetector:
 
     def getCenterOfBlob(self, image, blobID, yMin, yMax, xMin, xMax):
 
+        xMinNew = xMax
+        xMaxNew = xMin
+
+        yMinNew = yMax
+        yMaxNew = yMin
+
+
         for y in range(yMin, yMax):
             for x in range(yMin, yMax):
                 if image[y, x] == blobID:
-                    if x < xMin:
-                        xMin = x
-                    if x > xMax:
-                        xMax = x
-                    if y < yMin:
-                        yMin = y
-                    if y > yMax:
-                        yMax = y
+                    if x < xMinNew:
+                        xMinNew = x
+                    if x > xMaxNew:
+                        xMaxNew = x
+                    if y < yMinNew:
+                        yMinNew = y
+                    if y > yMaxNew:
+                        yMaxNew = y
 
-        return int((xMin + xMax) / 2), int((yMin + yMax) / 2)
+        return int((xMinNew + xMaxNew) / 2), int((yMinNew + yMaxNew) / 2)
 
     def thImage(self, img, th):
         height, width = img.shape
