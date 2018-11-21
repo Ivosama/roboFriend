@@ -151,13 +151,13 @@ face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 blobDetector = Detect.BlobDetector()
 brows = Eyebrows()
 
-sys.setrecursionlimit(3000)
+sys.setrecursionlimit(5000)
 
 while True:
     ret, frame = cap.read()
     #frame = cv2.imread("TestImages/Straight Outta CREATE 2.png", cv2.IMREAD_COLOR)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    editedImage = np.zeros((frame.shape[0], frame.shape[1]), np.uint8)
+    editedImage = np.zeros((gray.shape[0], gray.shape[1]), np.uint8)
 
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
