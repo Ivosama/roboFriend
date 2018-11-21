@@ -8,7 +8,9 @@ class Reactions:
     ba = collections.deque(maxlen=memlen)   # brow memory
     ml = ['smile', 'neutral', 'frown']  # list of mouths
     bl = ['b1', 'b2', 'b3'] # list of brows
-
+    # If we have time, maybe use face memory to create reactions based on change
+    # eg, if ma is [frown, frown, neutral, smile, frown, neutral, smile, smile, smile, neutral]
+    # read it as a shift from frown to smile, and maybe react with a "yay i cheered you up"
 
     def getReaction(self):
         m = Reactions.getMouth
@@ -25,17 +27,23 @@ class Reactions:
                 return
         elif m == 'neutral':
             if b == 'b1':
+                print('neutral, b1')
                 return      # Replace each of these returns with separate functions, or more ifs with robot feelings
             elif b == 'b2':
+                print('neutral, b2')
                 return
             elif b == 'b3':
+                print('neutral, b3')
                 return
         elif m == 'frown':
             if b == 'b1':
+                print('frown, b1')
                 return      # Replace each of these returns with separate functions, or more ifs with robot feelings
             elif b == 'b2':
+                print('frown, b2')
                 return
             elif b == 'b3':
+                print('frown, b3')
                 return
 
     def getMouth(self):     # Gets most common mouth entry from memory
@@ -58,9 +66,14 @@ class Reactions:
         Reactions.ma.append(m)
         Reactions.ba.append(b)
 
+    def updateMouth(self, m):  # update mouth only
+        Reactions.ma.append(m)
+
+    def updateBrow(self, b):  # update brow only
+        Reactions.ba.append(b)
+
+
     def debugRandFace(self):    # adds a random mouth and brow to memory
         import random
-        m = random.choice(Reactions.ml)
-        b = random.choice(Reactions.bl)
-        Reactions.ma.append(m)
-        Reactions.ba.append(b)
+        Reactions.ma.append(random.choice(Reactions.ml))
+        Reactions.ba.append(random.choice(Reactions.bl))
