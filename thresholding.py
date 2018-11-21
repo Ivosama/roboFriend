@@ -1,6 +1,7 @@
 # Thresholding code for fixing image n' stuff
 import numpy as np
 import cv2
+import math
 
 # Thresholding using gray scale image and a dynamically calulated threshold from image
 def th(img, stX, stY, endX, endY, thMod):
@@ -23,8 +24,6 @@ def th(img, stX, stY, endX, endY, thMod):
                 bI[i, j] = 0
             elif img.item(i, j) < TVa:
                 bI[i, j] = 255
-
-    #cv2.imshow('Thresholded Image', bI)
     print(TVa)
     return bI
 
@@ -57,4 +56,41 @@ def thHSL(img, stX, stY, endX, endY, thMod):
                 bI[i, j] = 0
             elif imgGray.item(i, j) < TVa:
                 bI[i, j] = 255
+    return bI
+
+def thSplit(img, stX, stY, endX, endY, thModT, thModB):
+    height, width = img.shape
+    bI = np.ones((height, width), np.uint8)
+    sumPix1 = 0
+    sumPix2 = 0
+
+    # Top part of face
+    for i in range(stY,  math.floor((endY - stY) / 2 + stY)):
+        for j in range(stX, endX):
+            sumPix1 += img.item(i, j)
+
+    TVa1 = sumPix1 / (math.floor((endY - stY) / 2) * (endX - stX)) + thModT
+
+    for i in range(stY, math.floor((endY - stY) / 2 + stY)):
+        for j in range(stX, endX):
+            if img.item(i, j) >= TVa1:
+                bI[i, j] = 0
+            elif img.item(i, j) < TVa1:
+                bI[i, j] = 255
+
+
+    # Bottom part of face
+    for i in range(math.floor((endY - stY) / 2 + stY), endY):
+        for j in range(stX, endX):
+            sumPix2 += img.item(i, j)
+
+    TVa2 = sumPix2 / (math.floor((endY - stY) / 2) * (endX - stX)) + thModB
+
+    for i in range(math.floor((endY - stY) / 2 + stY), endY):
+        for j in range(stX, endX):
+            if img.item(i, j) >= TVa2:
+                bI[i, j] = 0
+            elif img.item(i, j) < TVa2:
+                bI[i, j] = 255
+
     return bI

@@ -20,13 +20,18 @@ while True:
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
     for (x, y, w, h) in faces:
-        cv2.rectangle(gray, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        cv2.rectangle(editedImage, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
+
+        editedImage = eyes.drawSquaresOnEyes(gray, x, y, w, h)
         #editedImage = MedianGBlur.medianBlur(gray, editedImage, 3, x, y, w, h)
+        #editedImage = thresholding.th(editedImage, x, y, (w + x), (h + y), 40)
+        #editedImage = blobDetector.thImage(editedImage, 40)
         editedImage = thresholding.th(gray, x, y, (w+x), (h+y), -45)
+        #editedImage = thresholding.thSplit(gray, x, y, (w+x), (h+y), 0, 0)
         #editedImage = thresholding.thHSL(frame, x, y, (w + x), (h + y), 0)
         #editedImage = blobDetector.getObjectImage(editedImage, y, y+h, x, x+w, 50, 100)
 
-    cv2.imshow("imshow", editedImage)
+    cv2.imshow("imshow", gray)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
