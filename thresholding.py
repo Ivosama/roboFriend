@@ -58,6 +58,7 @@ def thHSL(img, stX, stY, endX, endY, thMod):
                 bI[i, j] = 255
     return bI
 
+# Thresholding version 3, it splits the image in top and bottom and does thresholding on both individually
 def thSplit(img, stX, stY, endX, endY, thModT, thModB):
     height, width = img.shape
     bI = np.ones((height, width), np.uint8)
