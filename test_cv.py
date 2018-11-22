@@ -4,6 +4,7 @@ import thresholding
 import MedianGBlur
 import Detect
 import sys
+import eyes
 
 cap = cv2.VideoCapture(0)
 
