@@ -6,6 +6,7 @@ import Detect
 import sys
 import eyes
 import SmileDetection
+import PyGame
 
 eyes = eyes.Eyes()
 
@@ -22,6 +23,7 @@ while True:
     editedImage = np.zeros((frame.shape[0], frame.shape[1]), np.uint8)
 
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+    PyGame.screen.fill((0, 0, 0))
 
     for (x, y, w, h) in faces:
         cv2.rectangle(editedImage, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
@@ -34,9 +36,11 @@ while True:
         mouthH = mouthMaxY - mouthMinY
 
         mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
-
         if SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
             cv2.imshow("Smile", gray)
+            PyGame.happyFace()
+        else:
+            PyGame.sadFace()
         #editedImage = MedianGBlur.medianBlur(gray, editedImage, 3, x, y, w, h)
         #editedImage = thresholding.th(editedImage, x, y, (w + x), (h + y), 40)
         #editedImage = blobDetector.thImage(editedImage, 40)

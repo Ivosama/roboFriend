@@ -24,7 +24,7 @@ def th(img, stX, stY, endX, endY, thMod):
                 bI[i, j] = 0
             elif img.item(i, j) < TVa:
                 bI[i, j] = 255
-    print(TVa)
+    #print(TVa)
     return bI
 
 # Thresholding version 2, uses HSL image for getting brightness (L) value of frame. Input frame, not gray-scale

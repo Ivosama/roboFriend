@@ -60,7 +60,7 @@ def neutralFace():
         f += 1.7
         pygame.display.update()
 
-
+"""
 while True:    # This needs to loop for the window to stay open
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -74,3 +74,5 @@ while True:    # This needs to loop for the window to stay open
         sadFace()
     if key[pygame.K_3]:
         neutralFace()
+
+"""
