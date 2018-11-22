@@ -6,6 +6,8 @@ import Detect
 import sys
 import eyes
 
+eyes = eyes.Eyes()
+
 cap = cv2.VideoCapture(0)
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
