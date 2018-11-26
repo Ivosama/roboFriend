@@ -58,8 +58,8 @@ class Reactions:
             print('frown')
             return 'frown'
         else:
-            print('mouthfucked')
-            return 'frown'
+            print('neutral')
+            return 'neutral'
 
     def getBrow(self):  # 3 states of brow, /  \   -  -   \  /
         if self.ba.count('b1') >= self.ba.count('b2') and self.ba.count('b1') >= self.ba.count('b3'):
@@ -72,8 +72,8 @@ class Reactions:
             print('b3')
             return 'b3'
         else:
-            print('browfucked')
-            return 'b3'
+            print('b2')
+            return 'b2'
 
     def updateFace(self, m, b):  # use this to update expressions, m = mouth b = brow
         self.ma.append(m)
@@ -90,9 +90,14 @@ class Reactions:
         self.ma.append(random.choice(self.ml))
         self.ba.append(random.choice(self.bl))
 
+    def initMem(self):  # Fills memory with some face for initialization
+        for x in range(self.memlen):
+            self.ma.append(self.m1[0])
+            self.ba.append(self.ba[1])
+
 
 r = Reactions()
-for i in range(25): # debug loop to fill mouth and brow memory with random inputs
+for i in range(r.memlen): # debug loop to fill mouth and brow memory with random inputs
     r.debugRandFace()
 
 r.getReaction()
