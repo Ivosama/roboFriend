@@ -4,12 +4,37 @@ import PyGame
 import SmileDetection
 import eyes
 
+import thresholding
+
 cap = cv2.VideoCapture(0)
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 awake = cv2.imread('TestImages/awake.jpg')
 sleep = cv2.imread('TestImages/sleeprobo.jpg')
 
+def getThDynamic(img, yMin, yMax, xMin, xMax):
+    valueCounter = 0
+    pixelCounter = 0
+    #print(yMin, yMax, xMin, xMax)
+    for y in range (yMin, yMax):
+        for x in range (xMin, xMax):
+            valueCounter += img[y, x]
+            pixelCounter += 1
+
+    if pixelCounter != 0:
+        return valueCounter / pixelCounter
+    else:
+        return 0
+
+def setTh(img, yMin, yMax, xMin, xMax, th):
+    for y in range (yMin, yMax):
+        for x in range (xMin, xMax):
+            if img[y, x] >= th:
+                img[y, x] = 0
+            else:
+                img[y, x] = 255
+
+    return img
 
 while True:
     ret, frame = cap.read()
@@ -27,6 +52,10 @@ while True:
         cv2.destroyWindow("Awake")
 
     for (x, y, w, h) in faces:
+        print(x, y, w, h)
+        th = getThDynamic(gray, y, y + h, x, x + w)
+        extraImg = setTh(gray.copy(), y, y + h, x, x + w, th / 2 + 10)
+        cv2.imshow("Extraimg", extraImg)
         cv2.rectangle(gray, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
 
         mouthMinX = int(x + (w / 4) - (w / 16))
@@ -37,6 +66,7 @@ while True:
 
         mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
         if SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
+            cv2.imshow("Smile", gray)
             PyGame.happyFace()
         else:
             PyGame.sadFace()
