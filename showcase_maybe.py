@@ -16,10 +16,18 @@ def getThDynamic(img, yMin, yMax, xMin, xMax):
     valueCounter = 0
     pixelCounter = 0
     #print(yMin, yMax, xMin, xMax)
-    for y in range (yMin, yMax):
+
+    valueCounter = np.sum(img)
+    pixelCounter = np.size(img)
+    print (valueCounter / pixelCounter)
+
+    """
+        for y in range (yMin, yMax):
         for x in range (xMin, xMax):
             valueCounter += img[y, x]
             pixelCounter += 1
+
+    """
 
     if pixelCounter != 0:
         return valueCounter / pixelCounter
