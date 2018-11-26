@@ -1,83 +1,116 @@
-def getReaction():
-    m = getMouth
-    b = getBrow
-    if m == 'smile':
-        if b == 'b1':
-            print('smile, b1')
-            return      # Replace each of these returns with separate functions, or more ifs with robot feelings
-        elif b == 'b2':
-            print('smile, b2')
-            return
-        elif b == 'b3':
-            print('smile, b3')
-            return
-    elif m == 'neutral':
-        if b == 'b1':
-            print('neutral, b1')
-            return      # Replace each of these returns with separate functions, or more ifs with robot feelings
-        elif b == 'b2':
-            print('neutral, b2')
-            return
-        elif b == 'b3':
-            print('neutral, b3')
-            return
-    elif m == 'frown':
-        if b == 'b1':
-            print('frown, b1')
-            return      # Replace each of these returns with separate functions, or more ifs with robot feelings
-        elif b == 'b2':
-            print('frown, b2')
-            return
-        elif b == 'b3':
-            print('frown, b3')
-            return
-
-
-def getMouth():     # Gets most common mouth entry from memory
-    if Reactions.ma.count('smile') >= Reactions.ma.count('neutral') & Reactions.ma.count('smile') >= Reactions.ma.count('frown'):  # Priority for positive reactions over negative
-        return 'smile'
-    elif Reactions.ma.count('neutral') >= Reactions.ma.count('frown') & Reactions.ma.count('neutral') >= Reactions.ma.count('smile'):
-        return 'neutral'
-    elif Reactions.ma.count('frown') >= Reactions.ma.count('neutral') & Reactions.ma.count('frown') >= Reactions.ma.count('smile'):
-        return 'frown'
-
-
-def getBrow():  # 3 states of brow, /  \   -  -   \  /
-    if Reactions.ma.count('b1') >= Reactions.ma.count('b2') & Reactions.ma.count('b1') >= Reactions.ma.count('b3'):
-        return 'b1'
-    elif Reactions.ma.count('b2') >= Reactions.ma.count('b3') & Reactions.ma.count('b2') >= Reactions.ma.count('b1'):
-        return 'b2'
-    elif Reactions.ma.count('b3') >= Reactions.ma.count('b2') & Reactions.ma.count('b3') >= Reactions.ma.count('b1'):
-        return 'b3'
-
-
-def updateFace(m, b):  # use this to update expressions, m = mouth b = brow
-    Reactions.ma.append(m)
-    Reactions.ba.append(b)
-
-
-def updateMouth(m):  # update mouth only
-    Reactions.ma.append(m)
-
-
-def updateBrow(b):  # update brow only
-    Reactions.ba.append(b)
-
-
-def debugRandFace():    # adds a random mouth and brow to memory
-    import random
-    Reactions.ma.append(random.choice(Reactions.ml))
-    Reactions.ba.append(random.choice(Reactions.bl))
-
-
 class Reactions:
     import collections
-    memlen = 10 # robot's memory length for mouth and brow lists, first in first out unless specified otherwise (deque)
-    ma = collections.deque(maxlen=memlen)   # Mouth memory
-    ba = collections.deque(maxlen=memlen)   # brow memory
+    memlen = 10  # robot's memory length for mouth and brow lists, first in first out unless specified otherwise (deque)
+    ma = collections.deque(maxlen=memlen)  # Mouth memory
+    ba = collections.deque(maxlen=memlen)  # brow memory
     ml = ['smile', 'neutral', 'frown']  # list of mouths
     bl = ['b1', 'b2', 'b3']  # list of brows, can add more, but then have to add below too
     # If we have time, maybe use face memory to create reactions based on change
     # eg, if ma is [frown, frown, neutral, smile, frown, neutral, smile, smile, smile, neutral]
     # read it as a shift from frown to smile, and maybe react with a "yay i cheered you up"
+
+    def getReaction(self):
+        m = self.getMouth()
+        b = self.getBrow()
+        if m == 'smile':
+            if b == 'b1':
+                print('smile, b1')
+                return  # Replace each of these returns with separate functions, or more ifs with robot feelings
+            elif b == 'b2':
+                print('smile, b2')
+                return
+            elif b == 'b3':
+                print('smile, b3')
+                return
+        elif m == 'neutral':
+            if b == 'b1':
+                print('neutral, b1')
+                return  # Replace each of these returns with separate functions, or more ifs with robot feelings
+            elif b == 'b2':
+                print('neutral, b2')
+                return
+            elif b == 'b3':
+                print('neutral, b3')
+                return
+        elif m == 'frown':
+            if b == 'b1':
+                print('frown, b1')
+                return  # Replace each of these returns with separate functions, or more ifs with robot feelings
+            elif b == 'b2':
+                print('frown, b2')
+                return
+            elif b == 'b3':
+                print('frown, b3')
+                return
+        else:
+            print('fuck')
+            print(self.getMouth)
+            print(self.getBrow)
+
+    def getMouth(self):  # Gets most common mouth entry from memory, can be changed later to list from most common to least.
+        if self.ma.count('smile') >= self.ma.count('neutral') and self.ma.count('smile') >= self.ma.count('frown'):  # Priority for positive reactions over negative
+            print('smile')
+            return 'smile'
+        elif self.ma.count('neutral') >= self.ma.count('frown') and self.ma.count('neutral') >= self.ma.count('smile'):
+            print('neutral')
+            return 'neutral'
+        elif self.ma.count('frown') >= self.ma.count('neutral') and self.ma.count('frown') >= self.ma.count('smile'):
+            print('frown')
+            return 'frown'
+        else:
+            print('neutral')
+            return 'neutral'
+
+    def getBrow(self):  # 3 states of brow, /  \   -  -   \  /
+        if self.ba.count('b1') >= self.ba.count('b2') and self.ba.count('b1') >= self.ba.count('b3'):
+            print('b1')
+            return 'b1'
+        elif self.ba.count('b2') >= self.ba.count('b3') and self.ba.count('b2') >= self.ba.count('b1'):
+            print('b2')
+            return 'b2'
+        elif self.ba.count('b3') >= self.ba.count('b2') and self.ba.count('b3') >= self.ba.count('b1'):
+            print('b3')
+            return 'b3'
+        else:
+            print('b2')
+            return 'b2'
+
+    def updateFace(self, m, b):  # use this to update expressions, m = mouth b = brow
+        self.ma.append(m)
+        self.ba.append(b)
+
+    def updateMouth(self, m):  # update mouth only
+        self.ma.append(m)
+
+    def updateBrow(self, b):  # update brow only
+        self.ba.append(b)
+
+    def debugRandFace(self):  # adds a random mouth and brow to memory
+        import random
+        self.ma.append(random.choice(self.ml))
+        self.ba.append(random.choice(self.bl))
+
+    def initMem(self):  # Fills memory with some face for initialization
+        for x in range(self.memlen):
+            self.ma.append(self.m1[0])
+            self.ba.append(self.ba[1])
+
+
+r = Reactions()
+for i in range(r.memlen): # debug loop to fill mouth and brow memory with random inputs
+    r.debugRandFace()
+
+r.getReaction()
+
+"""
+print('avg mouth:')
+r.getMouth()
+print('avg brow:')
+r.getBrow()
+print('all vals')
+for i in range(r.memlen):
+    print(r.ma[i])
+    print(r.ba[i])
+"""
+
 
