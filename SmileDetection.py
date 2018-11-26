@@ -1,6 +1,10 @@
 import cv2
 import numpy as np
+
+import cum_hist as ch
+import histogram as hg
 import thresholding
+
 
 def deleteWhiteSides(edited, rectX, rectY, rectW, rectH):
     deleteFromLeft = 0
@@ -39,7 +43,7 @@ def deleteWhiteSides(edited, rectX, rectY, rectW, rectH):
     return edited, deleteFromLeft, deleteFromRight
 
 
-def rapidSmileCascade(src, rectX, rectY, rectW, rectH):
+def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
     """
     :param src: The input image, for best results it should be median blurred with cv2 radius 3 and histogram equalized
     :param rectX: The top left x of the rectangle to search through
@@ -57,6 +61,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH):
     searchRectW = int(np.ceil((rectW/8)*6))
     smileDetected = False
     bottomOfLip = src.shape[0]
+    normalisedLighting = histogramMedian/127
     #imageCopy = src.copy()
     #cv2.rectangle(imageCopy, (rectX, rectY), (rectX+searchRectW, rectY+searchRectH), (255, 0, 0), 1)
     #cv2.imshow("Size of search rectangle", imageCopy)
@@ -81,7 +86,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH):
             bottomLeftBottom = cumSumTable[y+searchRectH, x-searchRectW]
             bottomColourSum = (bottomRightBottom-topRightBottom-bottomLeftBottom+topLeftBottom)/searchRectArea
 
-            if (bottomColourSum-topColourSum) > 40:
+            if (bottomColourSum-topColourSum) > normalisedLighting*40:
                 #print(topColourSum)
                 #print(bottomColourSum)
                 #cv2.rectangle(imageCopy, (x-searchRectW, y), (x, y), (255, 0, 0), 2)
@@ -108,7 +113,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH):
             bottomLeftBottom = cumSumTable[y+searchRectH, x-searchRectW]
             bottomColourSum = (bottomRightBottom-topRightBottom-bottomLeftBottom+topLeftBottom)/searchRectArea
 
-            if (topColourSum-bottomColourSum) < -30:
+            if (topColourSum-bottomColourSum) < -normalisedLighting*30:
                 searchRectX = int(x-(searchRectW/8)*5)
                 searchRectW = int(searchRectW/8)
                 searchRectX += searchRectW
@@ -126,7 +131,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH):
                 bottomColourSum = (bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
 
 
-                if bottomColourSum - topColourSum > 6:
+                if bottomColourSum - topColourSum > normalisedLighting*6:
                     searchRectX = int(x-(originalSearchW/5))
                     #searchRectW = int(searchRectW / 8)
 
@@ -153,11 +158,17 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH):
                     #print(rightColourSum - topColourSum)
                     #print(leftColourSum - topColourSum)
 
-                    if abs(rightColourSum - topColourSum) > 3 and abs(leftColourSum - topColourSum) > 0.6 and y < bottomOfLip:
+                    if abs(rightColourSum - topColourSum) > normalisedLighting*3 and abs(leftColourSum - topColourSum) > normalisedLighting*0.6 and y < bottomOfLip:
                         #print("LUL")
                         smileDetected = True
 
     return smileDetected #int(bottomOfLip), topOfLip
+
+
+def find_nearest(array, value):
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return idx
 
 
 def mouthSmiling(src, rectX, rectY, rectW, rectH):
@@ -179,7 +190,26 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
     src = cv2.equalizeHist(src)
     edited = thresholding.th(src, rectX, rectY, rectX+rectW, rectY+rectH, -45)
 
+    histogram = hg.histogram(src)
+    cumHist = ch.cumulative_histogram(histogram)
+    histogramMedian = np.median(cumHist)
+    #print(histogramMedian)
+    if histogramMedian in cumHist:
+        for yikers in range(0, len(cumHist)-1):
+            if cumHist[yikers] <= histogramMedian+1 and cumHist[yikers] >= histogramMedian-1:
+                histogramMedian = yikers
+                break
+    else:
+        histogramMedian = find_nearest(cumHist, histogramMedian)
+
+    print(histogramMedian)
+    """
+    histogramMedians.append(histogramMedian)
+    if len(histogramMedians) > 10:
+        print(np.mean(histogramMedians))
+
+    """
     edited, deleteFromLeft, deleteFromRight = deleteWhiteSides(edited, rectX, rectY, rectW, rectH)
 
-    smileDetected = rapidSmileCascade(src, rectX+deleteFromLeft, rectY, rectW-deleteFromRight, rectH)
+    smileDetected = rapidSmileCascade(src, rectX+deleteFromLeft, rectY, rectW-deleteFromRight, rectH, histogramMedian)
     return smileDetected
