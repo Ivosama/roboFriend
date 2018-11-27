@@ -5,11 +5,10 @@ class Reactions:
     ba = collections.deque(maxlen=memlen)  # brow memory
     ml = ['smile', 'neutral', 'frown']  # list of mouths
     bl = ['b1', 'b2', 'b3']  # list of brows, can add more, but then have to add below too
+    acting = False  # Whether or not the robot is performing an action
     # If we have time, maybe use face memory to create reactions based on change
     # eg, if ma is [frown, frown, neutral, smile, frown, neutral, smile, smile, smile, neutral]
     # read it as a shift from frown to smile, and maybe react with a "yay i cheered you up"
-
-
 
     def getReaction(self):
         m = self.getMouth()
@@ -119,10 +118,10 @@ class Reactions:
 
 
 r = Reactions()
-for i in range(r.memlen): # debug loop to fill mouth and brow memory with random inputs
+for i in range(r.memlen):    # debug loop to fill mouth and brow memory with random inputs
     r.debugRandFace()
-
-r.getReaction()
+if not r.acting:
+    r.getReaction()
 
 """
 print('avg mouth:')
