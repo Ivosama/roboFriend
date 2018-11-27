@@ -3,6 +3,12 @@ import numpy as np
 import cv2
 import math
 
+
+
+
+
+
+
 # Thresholding using gray scale image and a dynamically calulated threshold from image
 def th(img, stX, stY, endX, endY, thMod):
     height, width = img.shape

@@ -1,9 +1,19 @@
 # import the necessary packages
 from picamera.array import PiRGBArray
 from picamera import PiCamera
+import numpy as np
+import Detect
+import sys
+import eyes
+import SmileDetection
+import PyGame
 import time
 import cv2
 import io
+
+eyes = eyes.Eyes()
+blobDetector = Detect.BlobDetector()
+sys.setrecursionlimit(5000)
 
 # Create a memory stream so photos doesn't need to be saved in a file
 stream = io.BytesIO()
@@ -33,6 +43,20 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
     for (x, y, w, h) in faces:
         cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        eyes.drawSquaresOnEyes(gray, x, y, w, h)
+
+        mouthMinX = int(x + (w / 4) - (w / 16))
+        mouthMinY = int(y + 3 * (h / 4) - (h / 8))
+        mouthMaxX = int(x + 3 * (w / 4) + (w / 16))
+        mouthMaxY = int(y + 3 * (h / 4) + h / 8 + h / 16)
+        mouthH = mouthMaxY - mouthMinY
+
+        mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
+        if SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
+            cv2.imshow("Smile", gray)
+            PyGame.happyFace()
+        else:
+            PyGame.sadFace()
 
     # show the frame
     cv2.imshow("Frame", image)
