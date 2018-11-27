@@ -5,6 +5,7 @@ class Reactions:
     ba = collections.deque(maxlen=memlen)  # brow memory
     ml = ['smile', 'neutral', 'frown']  # list of mouths
     bl = ['b1', 'b2', 'b3']  # list of brows, can add more, but then have to add below too
+    acting = False  # Whether or not the robot is performing an action
     # If we have time, maybe use face memory to create reactions based on change
     # eg, if ma is [frown, frown, neutral, smile, frown, neutral, smile, smile, smile, neutral]
     # read it as a shift from frown to smile, and maybe react with a "yay i cheered you up"
@@ -76,14 +77,30 @@ class Reactions:
             return 'b2'
 
     def updateFace(self, m, b):  # use this to update expressions, m = mouth b = brow
+        self.updateMouth(m)
+        self.updateBrow(b)
+
+    def updateMouthString(self, m):  # update mouth using string
         self.ma.append(m)
+
+    def updateMouth(self, mi):  # update mouth using integer
+        if mi == 0:
+            self.ma.append('smile')
+        if mi == 1:
+            self.ma.append('neutral')
+        if mi == 2:
+            self.ma.append('frown')
+
+    def updateBrowString(self, b):  # update brow using string
         self.ba.append(b)
 
-    def updateMouth(self, m):  # update mouth only
-        self.ma.append(m)
-
-    def updateBrow(self, b):  # update brow only
-        self.ba.append(b)
+    def updateBrow(self, bi):  # update mouth using integer
+        if bi == 0:
+            self.ma.append('b1')
+        if bi == 1:
+            self.ma.append('b2')
+        if bi == 2:
+            self.ma.append('b3')
 
     def debugRandFace(self):  # adds a random mouth and brow to memory
         import random
@@ -95,12 +112,16 @@ class Reactions:
             self.ma.append(self.m1[0])
             self.ba.append(self.ba[1])
 
+    def cheerUp(self):  # Triggers to try and cheer the user up with a little dance when they're sad
+        print('wiggle')
+        print('silly face')
+
 
 r = Reactions()
-for i in range(r.memlen): # debug loop to fill mouth and brow memory with random inputs
+for i in range(r.memlen):    # debug loop to fill mouth and brow memory with random inputs
     r.debugRandFace()
-
-r.getReaction()
+if not r.acting:
+    r.getReaction()
 
 """
 print('avg mouth:')
