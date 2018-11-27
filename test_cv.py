@@ -9,6 +9,7 @@ import SmileDetection
 import PyGame
 import cum_hist as ch
 import histogram as hg
+import FrownDetection
 
 eyes = eyes.Eyes()
 
@@ -38,8 +39,8 @@ while True:
         mouthH = mouthMaxY - mouthMinY
 
         mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
-        if SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
-            cv2.imshow("Smile", gray)
+        if FrownDetection.mouthFrowning(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
+            cv2.imshow("Frown", gray)
             PyGame.happyFace()
         else:
             PyGame.sadFace()
