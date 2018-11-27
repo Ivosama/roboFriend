@@ -7,6 +7,8 @@ import sys
 import eyes
 import SmileDetection
 import PyGame
+import cum_hist as ch
+import histogram as hg
 
 eyes = eyes.Eyes()
 
@@ -48,6 +50,8 @@ while True:
         #editedImage = thresholding.thSplit(gray, x, y, (w+x), (h+y), 0, 0)
         #editedImage = thresholding.thHSL(frame, x, y, (w + x), (h + y), 0)
         #editedImage = blobDetector.getObjectImage(editedImage, y, y+h, x, x+w, 50, 100)
+
+    print(SmileDetection.getHistogramMedian(gray))
 
     cv2.imshow("imshow", gray)
     if cv2.waitKey(1) & 0xFF == ord('q'):

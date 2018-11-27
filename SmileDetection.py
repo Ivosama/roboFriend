@@ -5,6 +5,21 @@ import cum_hist as ch
 import histogram as hg
 import thresholding
 
+def getHistogramMedian(src):
+    histogram = hg.histogram(src)
+    cumHist = ch.cumulative_histogram(histogram)
+    histogramMedian = np.median(cumHist)
+    # print(histogramMedian)
+    if histogramMedian in cumHist:
+        for yikers in range(0, len(cumHist) - 1):
+            if cumHist[yikers] <= histogramMedian + 1 and cumHist[yikers] >= histogramMedian - 1:
+                histogramMedian = yikers
+                break
+    else:
+        histogramMedian = find_nearest(cumHist, histogramMedian)
+
+    return histogramMedian
+
 
 def deleteWhiteSides(edited, rectX, rectY, rectW, rectH):
     deleteFromLeft = 0
@@ -130,6 +145,8 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
                 bottomLeftBottom = cumSumTable[y + searchRectH, searchRectX - searchRectW]
                 bottomColourSum = (bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
 
+                #cv2.rectangle(imageCopy, (searchRectX - searchRectW, y - searchRectH * 2),(searchRectX, y - searchRectH), (255, 0, 0), 2)
+                #cv2.imshow("Next Rectangle", imageCopy)
 
                 if bottomColourSum - topColourSum > normalisedLighting*6:
                     searchRectX = int(x-(originalSearchW/5))
@@ -153,7 +170,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
                     bottomLeftLeft = cumSumTable[y - searchRectH, searchRectX - searchRectW*2]
                     leftColourSum = (bottomRightLeft - topRightLeft - bottomLeftLeft + topLeftLeft) / searchRectArea
 
-                    #cv2.rectangle(imageCopy, (searchRectX - searchRectW, y-searchRectH*2), (searchRectX, y-searchRectH),(255, 0, 0), 2)
+                    #cv2.rectangle(imageCopy, (searchRectX - searchRectW, y - searchRectH * 2),(searchRectX, y - searchRectH), (255, 0, 0), 2)
                     #cv2.imshow("Next Rectangle", imageCopy)
                     #print(rightColourSum - topColourSum)
                     #print(leftColourSum - topColourSum)
@@ -202,7 +219,7 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
     else:
         histogramMedian = find_nearest(cumHist, histogramMedian)
 
-    print(histogramMedian)
+    #print(histogramMedian)
     """
     histogramMedians.append(histogramMedian)
     if len(histogramMedians) > 10:
