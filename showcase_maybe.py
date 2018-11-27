@@ -65,12 +65,10 @@ while True:
         cv2.destroyWindow("Awake")
 
     for (x, y, w, h) in faces:
-        print(x, y, w, h)
         th = getThDynamic(gray, y, y + h, x, x + w)
         extraImg = setTh(gray.copy(), y, y + h, x, x + w, th / 3 + 10)
         extraImg = cv2.medianBlur(extraImg, 5)
         browState = eb.getStateOfBrows(extraImg, b, y, y + h, x, x + w, 0)
-        cv2.imshow("Extraimg", extraImg)
         cv2.rectangle(gray, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
 
         mouthMinX = int(x + (w / 4) - (w / 16))
@@ -84,7 +82,7 @@ while True:
             cv2.imshow("Smile", gray)
             PyGame.happyFace()
         else:
-            PyGame.sadFace()
+            PyGame.neutralFace()
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
