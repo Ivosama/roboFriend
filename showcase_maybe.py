@@ -3,6 +3,8 @@ import numpy as np
 import PyGame
 import SmileDetection
 import eyes
+import Eyebrows
+import Detect
 
 import thresholding
 
@@ -11,6 +13,8 @@ cap = cv2.VideoCapture(0)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 awake = cv2.imread('TestImages/awake.jpg')
 sleep = cv2.imread('TestImages/sleeprobo.jpg')
+
+
 
 def getThDynamic(img, yMin, yMax, xMin, xMax):
     valueCounter = 0
@@ -47,7 +51,8 @@ def setTh(img, yMin, yMax, xMin, xMax, th):
 while True:
     ret, frame = cap.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
+    eb = Eyebrows.Eyebrows()
+    b = Detect.BlobDetector()
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
     PyGame.screen.fill((0, 0, 0))
@@ -62,7 +67,9 @@ while True:
     for (x, y, w, h) in faces:
         print(x, y, w, h)
         th = getThDynamic(gray, y, y + h, x, x + w)
-        extraImg = setTh(gray.copy(), y, y + h, x, x + w, th / 2 + 10)
+        extraImg = setTh(gray.copy(), y, y + h, x, x + w, th / 3 + 10)
+        extraImg = cv2.medianBlur(extraImg, 5)
+        browState = eb.getStateOfBrows(extraImg, b, y, y + h, x, x + w, 0)
         cv2.imshow("Extraimg", extraImg)
         cv2.rectangle(gray, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
 
