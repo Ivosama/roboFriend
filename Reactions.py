@@ -9,6 +9,8 @@ class Reactions:
     # eg, if ma is [frown, frown, neutral, smile, frown, neutral, smile, smile, smile, neutral]
     # read it as a shift from frown to smile, and maybe react with a "yay i cheered you up"
 
+
+
     def getReaction(self):
         m = self.getMouth()
         b = self.getBrow()
