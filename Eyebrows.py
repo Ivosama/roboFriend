@@ -144,7 +144,7 @@ class Eyebrows:
 
 
 ########## END OF CLASS ###########
-
+"""
 cap = cv2.VideoCapture(0)
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
@@ -177,3 +177,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+"""

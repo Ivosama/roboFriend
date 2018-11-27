@@ -210,6 +210,9 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
 
     """
     edited, deleteFromLeft, deleteFromRight = deleteWhiteSides(edited, rectX, rectY, rectW, rectH)
-
+    if deleteFromRight > rectW/3:
+        deleteFromRight = 0
+    if deleteFromLeft > rectW/3:
+        deleteFromLeft = 0
     smileDetected = rapidSmileCascade(src, rectX+deleteFromLeft, rectY, rectW-deleteFromRight, rectH, histogramMedian)
     return smileDetected
