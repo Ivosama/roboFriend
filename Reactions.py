@@ -81,18 +81,20 @@ class Reactions:
         self.updateBrow(b)
 
     def updateMouthString(self, m):  # update mouth using string
-        self.ma.append(m)
+        if m == 'smile' or 'neutral' or 'frown':
+            self.ma.append(m)
 
     def updateMouth(self, mi):  # update mouth using integer
-        if mi == 0:
-            self.ma.append('smile')
         if mi == 1:
+            self.ma.append('smile')
+        if mi == 0:
             self.ma.append('neutral')
         if mi == 2:
             self.ma.append('frown')
 
     def updateBrowString(self, b):  # update brow using string
-        self.ba.append(b)
+        if b == 'b1' or 'b2' or 'b3':
+            self.ba.append(b)
 
     def updateBrow(self, bi):  # update mouth using integer
         if bi == 0:

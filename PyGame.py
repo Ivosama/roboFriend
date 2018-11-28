@@ -11,6 +11,17 @@ screen.fill(black)
 r = math.pi  # Getting the pi value so I don't have to write math.pi every time
 
 
+def angryFace():
+    pygame.draw.polygon(screen, green, [(90, 100), (100, 60), (230, 110)], 10)
+    pygame.draw.polygon(screen, green, [(410, 100), (420, 60), (270, 110)], 10)
+    f = 0.1    # This iterates in the next while to get the animation effect
+    while f <= r/3.5:
+        clock.tick(300)
+        pygame.draw.arc(screen, green, ((60, 200), (350, 90)), r/2 - f, r/2 + f, 10)
+        f += 0.01
+        pygame.display.update()
+
+
 def sadFace():
     lEye = pygame.Rect(90, 60, 100, 60)
     rEye = pygame.Rect(270, 60, 100, 60)
@@ -25,7 +36,6 @@ def sadFace():
         pygame.draw.arc(screen, green, ((60, 200), (350, 90)), r/2 - f, r/2 + f, 10)
         f += 0.01
         pygame.display.update()
-
 
 
 def happyFace():
