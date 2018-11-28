@@ -84,9 +84,9 @@ class Reactions:
         self.ma.append(m)
 
     def updateMouth(self, mi):  # update mouth using integer
-        if mi == 0:
-            self.ma.append('smile')
         if mi == 1:
+            self.ma.append('smile')
+        if mi == 0:
             self.ma.append('neutral')
         if mi == 2:
             self.ma.append('frown')
