@@ -39,10 +39,12 @@ while True:
         mouthH = mouthMaxY - mouthMinY
 
         mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
-        if FrownDetection.mouthFrowning(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
-            cv2.imshow("Frown", gray)
+        isSmiling, isFrowning = SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY)
+        if isSmiling:
+            cv2.imshow("Smile", gray)
             PyGame.happyFace()
-        else:
+        elif isFrowning:
+            cv2.imshow("Frown", gray)
             PyGame.sadFace()
         #editedImage = MedianGBlur.medianBlur(gray, editedImage, 3, x, y, w, h)
         #editedImage = thresholding.th(editedImage, x, y, (w + x), (h + y), 40)
