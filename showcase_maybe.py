@@ -3,13 +3,14 @@ import numpy as np
 import PyGame
 import SmileDetection
 import eyes
+import sys
 import Eyebrows
 import Detect
 
 import thresholding
 
 cap = cv2.VideoCapture(0)
-
+sys.setrecursionlimit(3000)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 awake = cv2.imread('TestImages/awake.jpg')
 sleep = cv2.imread('TestImages/sleeprobo.jpg')

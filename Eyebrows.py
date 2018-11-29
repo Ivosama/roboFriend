@@ -34,6 +34,8 @@ class Eyebrows:
         h = yMax - yMin
         w = xMax - xMin
 
+        state = 0
+
         sizeX = int(3*w / 4)
         sizeY = int(h / 6)
 
@@ -122,13 +124,14 @@ class Eyebrows:
                     if positions[left][1] > positions[leftCenter][1] - posTH:
                         leftState = 0
 
+                state = int((rightState + leftState) / 2)
                 print("Right ")
                 print(rightState)
                 print("Left ")
                 print(leftState)
 
 
-        return img
+        return state
 
 
     def getBlobInSide(self, positions, side):

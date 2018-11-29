@@ -7,6 +7,9 @@ import sys
 import eyes
 import SmileDetection
 import PyGame
+import cum_hist as ch
+import histogram as hg
+import FrownDetection
 
 eyes = eyes.Eyes()
 
@@ -20,12 +23,14 @@ while True:
     ret, frame = cap.read()
     #frame = cv2.imread("TestImages/Straight Outta CREATE 2.png", cv2.IMREAD_COLOR)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    editedImage = np.zeros((frame.shape[0], frame.shape[1]), np.uint8)
+    #gray = cv2.imread("TestImages/NightSmile.png", cv2.IMREAD_GRAYSCALE)
+    editedImage = np.zeros((gray.shape[0], gray.shape[1]), np.uint8)
 
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
     PyGame.screen.fill((0, 0, 0))
 
     for (x, y, w, h) in faces:
+        #cv2.imwrite("TestImages/NightSmile.png", gray)
         cv2.rectangle(editedImage, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
         editedImage = eyes.drawSquaresOnEyes(gray, x, y, w, h)
 
@@ -36,11 +41,17 @@ while True:
         mouthH = mouthMaxY - mouthMinY
 
         mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
-        if SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
+        isSmiling, isFrowning = SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY)
+        if isSmiling:
             cv2.imshow("Smile", gray)
             PyGame.happyFace()
-        else:
+        elif isFrowning:
+            cv2.imshow("Frown", gray)
             PyGame.sadFace()
+        else:
+            cv2.imshow("Normal", gray)
+
+        #sys.exit("Yote")
         #editedImage = MedianGBlur.medianBlur(gray, editedImage, 3, x, y, w, h)
         #editedImage = thresholding.th(editedImage, x, y, (w + x), (h + y), 40)
         #editedImage = blobDetector.thImage(editedImage, 40)
@@ -48,6 +59,8 @@ while True:
         #editedImage = thresholding.thSplit(gray, x, y, (w+x), (h+y), 0, 0)
         #editedImage = thresholding.thHSL(frame, x, y, (w + x), (h + y), 0)
         #editedImage = blobDetector.getObjectImage(editedImage, y, y+h, x, x+w, 50, 100)
+
+    #print(SmileDetection.getHistogramMedian(gray))
 
     cv2.imshow("imshow", gray)
     if cv2.waitKey(1) & 0xFF == ord('q'):
