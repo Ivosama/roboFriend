@@ -15,7 +15,9 @@ sys.setrecursionlimit(3000)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 awake = cv2.imread('TestImages/awake.jpg')
 sleep = cv2.imread('TestImages/sleeprobo.jpg')
-
+#
+r = Reactions.Reactions()
+r.initMem()
 
 
 
@@ -57,8 +59,6 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     eb = Eyebrows.Eyebrows()
     b = Detect.BlobDetector()
-    r = Reactions.Reactions()
-    r.initMem()
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
     PyGame.screen.fill((0, 0, 0))
