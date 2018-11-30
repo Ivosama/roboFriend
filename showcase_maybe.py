@@ -6,14 +6,17 @@ import eyes
 import sys
 import Eyebrows
 import Detect
-
+import pygame
 import thresholding
+import Reactions
 
 cap = cv2.VideoCapture(0)
 sys.setrecursionlimit(3000)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 awake = cv2.imread('TestImages/awake.jpg')
 sleep = cv2.imread('TestImages/sleeprobo.jpg')
+
+
 
 
 
@@ -54,6 +57,8 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     eb = Eyebrows.Eyebrows()
     b = Detect.BlobDetector()
+    r = Reactions.Reactions()
+    r.initMem()
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
     PyGame.screen.fill((0, 0, 0))
@@ -80,10 +85,12 @@ while True:
 
         mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
         if SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
-            cv2.imshow("Smile", gray)
-            PyGame.happyFace()
+            r.updateMouth(1)
         else:
-            PyGame.neutralFace()
+            r.updateMouth(0)
+        r.updateBrow(browState)
+        r.getReaction()
+
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
