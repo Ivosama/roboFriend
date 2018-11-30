@@ -66,10 +66,8 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
     :param rectW: The width of the search area
     :param rectH: The height of the search area
     :return: Returns true or false depending on whether the smile passes the tests or not
-
     To look at what is happening, uncomment the commented parts at the bottom of each stage.
     This will show the rectangles that the program is testing and searching through
-
     """
     cumSumTable = src.cumsum(axis=0).cumsum(axis=1)
     searchRectH = int(np.ceil(rectH/8))
@@ -78,7 +76,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
     frownDetected = False
     bottomOfLip = src.shape[0]
     normalisedLighting = histogramMedian/127
-    imageCopy = src.copy()
+    #imageCopy = src.copy()
     #cv2.rectangle(imageCopy, (rectX, rectY), (rectX+searchRectW, rectY+searchRectH), (255, 0, 0), 1)
     #cv2.imshow("Size of search rectangle", imageCopy)
 
@@ -102,7 +100,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
             bottomLeftBottom = cumSumTable[y+searchRectH, x-searchRectW]
             bottomColourSum = (bottomRightBottom-topRightBottom-bottomLeftBottom+topLeftBottom)/searchRectArea
 
-            if (bottomColourSum-topColourSum) > normalisedLighting*30:
+            if (bottomColourSum-topColourSum) > normalisedLighting*40:
                 #print(topColourSum)
                 #print(bottomColourSum)
                 #cv2.rectangle(imageCopy, (x-searchRectW, y), (x, y), (255, 0, 0), 2)
@@ -111,7 +109,6 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
 
     for y in range(rectY+int(rectH/3), rectY+(rectH-searchRectH)-1):
         for x in range(rectX+searchRectW, rectX+rectW-1):
-            """
             searchRectH = int(np.ceil(rectH / 8))
             searchRectW = int(np.ceil((rectW / 8) * 6))
             originalSearchW = searchRectW
@@ -130,111 +127,56 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
             bottomLeftBottom = cumSumTable[y+searchRectH, x-searchRectW]
             bottomColourSum = (bottomRightBottom-topRightBottom-bottomLeftBottom+topLeftBottom)/searchRectArea
 
-            #cv2.rectangle(imageCopy, (x - searchRectW, y - searchRectH), (x, y), (255, 0, 0), 2)
-            #cv2.imshow("Next Rectangle", imageCopy)
-            
             if (topColourSum-bottomColourSum) < -normalisedLighting*30:
-            """
-            searchRectH = int(np.ceil(rectH / 8))
-            searchRectW = int(np.ceil((rectW / 8) * 6))
-            originalSearchW = searchRectW
-            searchRectArea = searchRectH * searchRectW
+                searchRectX = int(x-(searchRectW/8)*5)
+                searchRectW = int(searchRectW/8)
+                searchRectX += searchRectW
 
-            bottomRightTop = cumSumTable[y, x]
-            topRightTop = cumSumTable[y - searchRectH, x]
-            topLeftTop = cumSumTable[y - searchRectH, x - searchRectW]
-            bottomLeftTop = cumSumTable[y, x - searchRectW]
-            topColourSum = (bottomRightTop - topRightTop - bottomLeftTop + topLeftTop) / searchRectArea
+                bottomRightTop = cumSumTable[y, searchRectX]
+                topRightTop = cumSumTable[y - searchRectH, searchRectX]
+                topLeftTop = cumSumTable[y - searchRectH, searchRectX - searchRectW]
+                bottomLeftTop = cumSumTable[y, searchRectX - searchRectW]
+                topColourSum = (bottomRightTop - topRightTop - bottomLeftTop + topLeftTop) / searchRectArea
 
-            bottomRightBottom = cumSumTable[y + searchRectH, x]
-            topRightBottom = cumSumTable[y, x]
-            topLeftBottom = cumSumTable[y, x - searchRectW]
-            bottomLeftBottom = cumSumTable[y + searchRectH, x - searchRectW]
-            bottomColourSum = (bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
+                bottomRightBottom = cumSumTable[y + searchRectH, searchRectX]
+                topRightBottom = cumSumTable[y, searchRectX]
+                topLeftBottom = cumSumTable[y, searchRectX - searchRectW]
+                bottomLeftBottom = cumSumTable[y + searchRectH, searchRectX - searchRectW]
+                bottomColourSum = (bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
 
-            # cv2.rectangle(imageCopy, (x-searchRectW, y - searchRectH),(x, y), (255, 0, 0), 2)
-            # cv2.imshow("Next Rectangle", imageCopy)
-            # print(topColourSum-bottomColourSum)
+                #cv2.rectangle(imageCopy, (searchRectX - searchRectW, y - searchRectH * 2),(searchRectX, y - searchRectH), (255, 0, 0), 2)
+                #cv2.imshow("Next Rectangle", imageCopy)
 
-            if (topColourSum - bottomColourSum) < -normalisedLighting * 8:
-                mouthStraightish = True
-                searchRectW = int(searchRectW / 8)
-                # searchRectX += searchRectW
-                for xLineSegmenter in range(5):
-                    searchRectX = int(x - (originalSearchW / 9) * (2 + xLineSegmenter))
-                    bottomRightTop = cumSumTable[y, searchRectX]
-                    topRightTop = cumSumTable[y - searchRectH, searchRectX]
-                    topLeftTop = cumSumTable[y - searchRectH, searchRectX - searchRectW]
-                    bottomLeftTop = cumSumTable[y, searchRectX - searchRectW]
-                    topColourSum = (bottomRightTop - topRightTop - bottomLeftTop + topLeftTop) / searchRectArea
+                if bottomColourSum - topColourSum > normalisedLighting*6:
+                    searchRectX = int(x-(originalSearchW/5))
+                    #searchRectW = int(searchRectW / 8)
 
-                    bottomRightBottom = cumSumTable[y + searchRectH, searchRectX]
-                    topRightBottom = cumSumTable[y, searchRectX]
-                    topLeftBottom = cumSumTable[y, searchRectX - searchRectW]
-                    bottomLeftBottom = cumSumTable[y + searchRectH, searchRectX - searchRectW]
-                    bottomColourSum = (bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
-
-                    # cv2.rectangle(imageCopy, (searchRectX - searchRectW, y - searchRectH),(searchRectX, y), (255, 0, 0), 2)
-                    # cv2.imshow("Next Rectangle", imageCopy)
-                    print(topColourSum - bottomColourSum)
-                    if topColourSum - bottomColourSum > 0:
-                        mouthStraightish = False
-                # print(mouthStraightish)
-                if mouthStraightish:
-                    searchRectX = int(x-(searchRectW/8)*5)
-                    searchRectW = int(originalSearchW/8)
-                    searchRectX += searchRectW
-                    searchRectX = int(x-searchRectW)
-
-                    bottomRightTop = cumSumTable[y - searchRectH, searchRectX]
-                    topRightTop = cumSumTable[y - searchRectH - searchRectH, searchRectX]
-                    topLeftTop = cumSumTable[y - searchRectH - searchRectH, searchRectX - searchRectW]
+                    bottomRightTop = cumSumTable[y-searchRectH, searchRectX]
+                    topRightTop = cumSumTable[y - searchRectH*2, searchRectX]
+                    topLeftTop = cumSumTable[y - searchRectH*2, searchRectX - searchRectW]
                     bottomLeftTop = cumSumTable[y - searchRectH, searchRectX - searchRectW]
                     topColourSum = (bottomRightTop - topRightTop - bottomLeftTop + topLeftTop) / searchRectArea
 
-                    bottomRightBottom = cumSumTable[y, searchRectX+searchRectW]
-                    topRightBottom = cumSumTable[y - searchRectH, searchRectX+searchRectW]
-                    topLeftBottom = cumSumTable[y - searchRectH, searchRectX+searchRectW]
-                    bottomLeftBottom = cumSumTable[y, searchRectX+searchRectW]
-                    bottomColourSum = (bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
+                    bottomRightRight = cumSumTable[y-searchRectH, searchRectX + searchRectW]
+                    topRightRight = cumSumTable[y - searchRectH*2, searchRectX + searchRectW]
+                    topLeftRight = cumSumTable[y - searchRectH*2, searchRectX]
+                    bottomLeftRight = cumSumTable[y - searchRectH, searchRectX]
+                    rightColourSum = (bottomRightRight - topRightRight - bottomLeftRight + topLeftRight) / searchRectArea
 
-                    cv2.rectangle(imageCopy, (searchRectX, y - searchRectH),(searchRectX+searchRectW, y), (255, 0, 0), 2)
-                    cv2.imshow("Next Rectangle", imageCopy)
-                    print(bottomColourSum-topColourSum)
-                    if topColourSum - bottomColourSum > normalisedLighting*15:
-                        searchRectX = x
-                        #searchRectW = int(searchRectW / 8)
+                    bottomRightLeft = cumSumTable[y - searchRectH, searchRectX-searchRectW]
+                    topRightLeft = cumSumTable[y - searchRectH * 2, searchRectX-searchRectW]
+                    topLeftLeft = cumSumTable[y - searchRectH * 2, searchRectX - searchRectW*2]
+                    bottomLeftLeft = cumSumTable[y - searchRectH, searchRectX - searchRectW*2]
+                    leftColourSum = (bottomRightLeft - topRightLeft - bottomLeftLeft + topLeftLeft) / searchRectArea
 
-                        bottomRightTop = cumSumTable[y-searchRectH*2, searchRectX]
-                        topRightTop = cumSumTable[y - searchRectH*3, searchRectX]
-                        topLeftTop = cumSumTable[y - searchRectH*3, searchRectX - searchRectW]
-                        bottomLeftTop = cumSumTable[y - searchRectH*2, searchRectX - searchRectW]
-                        topColourSum = (bottomRightTop - topRightTop - bottomLeftTop + topLeftTop) / searchRectArea
+                    #cv2.rectangle(imageCopy, (searchRectX - searchRectW, y - searchRectH * 2),(searchRectX, y - searchRectH), (255, 0, 0), 2)
+                    #cv2.imshow("Next Rectangle", imageCopy)
+                    #print(rightColourSum - topColourSum)
+                    #print(leftColourSum - topColourSum)
 
-                        bottomRightRight = cumSumTable[y-searchRectH*2, searchRectX + searchRectW]
-                        topRightRight = cumSumTable[y - searchRectH*3, searchRectX + searchRectW]
-                        topLeftRight = cumSumTable[y - searchRectH*3, searchRectX]
-                        bottomLeftRight = cumSumTable[y - searchRectH*2, searchRectX]
-                        rightColourSum = (bottomRightRight - topRightRight - bottomLeftRight + topLeftRight) / searchRectArea
-
-                        bottomRightLeft = cumSumTable[y - searchRectH*2, searchRectX-searchRectW]
-                        topRightLeft = cumSumTable[y - searchRectH * 3, searchRectX-searchRectW]
-                        topLeftLeft = cumSumTable[y - searchRectH * 3, searchRectX - searchRectW*2]
-                        bottomLeftLeft = cumSumTable[y - searchRectH*2, searchRectX - searchRectW*2]
-                        leftColourSum = (bottomRightLeft - topRightLeft - bottomLeftLeft + topLeftLeft) / searchRectArea
-
-                        #cv2.rectangle(imageCopy, (searchRectX - searchRectW, y - searchRectH * 3),(searchRectX, y - searchRectH*2), (255, 0, 0), 2)
-                        #cv2.imshow("Next Rectangle", imageCopy)
-                        print(rightColourSum - topColourSum)
-                        print(leftColourSum - topColourSum)
-
-                        if abs(rightColourSum - topColourSum) > normalisedLighting*2 and abs(leftColourSum - topColourSum) > normalisedLighting*2 and y < src.shape[0]:
-                            #print("LUL")
-                            #testMouthSlope(src, )
-                            smileDetected = True
-                            #print(rectH)
-                            #cv2.rectangle(imageCopy, (int(x-originalSearchW*0.8), y-searchRectH), (x, y), (255, 0, 0), 1)
-                            #cv2.imshow("SmileXY", imageCopy)
+                    if abs(rightColourSum - topColourSum) > normalisedLighting*3 and abs(leftColourSum - topColourSum) > normalisedLighting*0.6 and y < bottomOfLip:
+                        #print("LUL")
+                        smileDetected = True
 
     if smileDetected == False and bottomOfLip == src.shape[0]:
         for y in range(rectY + int(rectH / 3), rectY + (rectH - searchRectH) - 1):
@@ -254,7 +196,8 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
                 topRightBottom = cumSumTable[y, x]
                 topLeftBottom = cumSumTable[y, x - searchRectW]
                 bottomLeftBottom = cumSumTable[y + searchRectH, x - searchRectW]
-                bottomColourSum = (bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
+                bottomColourSum = (
+                                              bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
 
                 # cv2.rectangle(imageCopy, (x-searchRectW, y - searchRectH),(x, y), (255, 0, 0), 2)
                 # cv2.imshow("Next Rectangle", imageCopy)
@@ -276,7 +219,8 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
                         topRightBottom = cumSumTable[y, searchRectX]
                         topLeftBottom = cumSumTable[y, searchRectX - searchRectW]
                         bottomLeftBottom = cumSumTable[y + searchRectH, searchRectX - searchRectW]
-                        bottomColourSum = (bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
+                        bottomColourSum = (
+                                                      bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
 
                         # cv2.rectangle(imageCopy, (searchRectX - searchRectW, y - searchRectH),(searchRectX, y), (255, 0, 0), 2)
                         # cv2.imshow("Next Rectangle", imageCopy)
@@ -299,7 +243,8 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
                         topRightBottom = cumSumTable[y, searchRectX]
                         topLeftBottom = cumSumTable[y, searchRectX - searchRectW]
                         bottomLeftBottom = cumSumTable[y + searchRectH, searchRectX - searchRectW]
-                        bottomColourSum = (bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
+                        bottomColourSum = (
+                                                      bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
 
                         # cv2.rectangle(imageCopy, (searchRectX - searchRectW, y), (searchRectX, y + searchRectH), (255, 0, 0), 2)
                         # cv2.imshow("Next Rectangle", imageCopy)
@@ -327,15 +272,13 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
     :param rectW: Face cascade w
     :param rectH: Face cascade h
     :return: True for if smile is detected, otherwise false
-
     First the area is median blurred (I tested originally with cv2 radius 3), then histogram equalized.
     Poul's dynamic thresholding applied
     Using the thresholded image, sides are deleted that are hopefully the background
     Then a cascade is run on the resulting dimensions
-
     """
     src = cv2.medianBlur(src, 3)
-    #src = cv2.equalizeHist(src)
+    src = cv2.equalizeHist(src)
     edited = thresholding.th(src, rectX, rectY, rectX+rectW, rectY+rectH, -45)
 
     histogram = hg.histogram(src)
@@ -355,12 +298,11 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
     histogramMedians.append(histogramMedian)
     if len(histogramMedians) > 10:
         print(np.mean(histogramMedians))
-
     """
     edited, deleteFromLeft, deleteFromRight = deleteWhiteSides(edited, rectX, rectY, rectW, rectH)
     if deleteFromRight > rectW/3:
         deleteFromRight = 0
     if deleteFromLeft > rectW/3:
         deleteFromLeft = 0
-    smileDetected, frownDetected = rapidSmileCascade(src, rectX+deleteFromLeft, rectY, rectW-deleteFromRight, rectH, histogramMedian)
-    return smileDetected, frownDetected
+    smileDetected = rapidSmileCascade(src, rectX+deleteFromLeft, rectY, rectW-deleteFromRight, rectH, histogramMedian)
+    return smileDetected
