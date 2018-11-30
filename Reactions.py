@@ -1,3 +1,5 @@
+import PyGame
+
 class Reactions:
     import collections
     memlen = 10  # robot's memory length for mouth and brow lists, first in first out unless specified otherwise (deque)
@@ -16,22 +18,28 @@ class Reactions:
         if m == 'smile':
             if b == 'b1':
                 print('smile, b1')
+                PyGame.happyFace()
                 return  # Replace each of these returns with separate functions, or more ifs with robot feelings
             elif b == 'b2':
                 print('smile, b2')
+                PyGame.happyFace()
                 return
             elif b == 'b3':
                 print('smile, b3')
+                PyGame.happyFace()
                 return
         elif m == 'neutral':
             if b == 'b1':
                 print('neutral, b1')
+                PyGame.sadFace()
                 return  # Replace each of these returns with separate functions, or more ifs with robot feelings
             elif b == 'b2':
                 print('neutral, b2')
+                PyGame.neutralFace()
                 return
             elif b == 'b3':
                 print('neutral, b3')
+                PyGame.angryFace()
                 return
         elif m == 'frown':
             if b == 'b1':
@@ -111,8 +119,8 @@ class Reactions:
 
     def initMem(self):  # Fills memory with some face for initialization
         for x in range(self.memlen):
-            self.ma.append(self.m1[0])
-            self.ba.append(self.ba[1])
+            self.updateMouth(0)
+            self.updateBrow(2)
 
     def cheerUp(self):  # Triggers to try and cheer the user up with a little dance when they're sad
         print('wiggle')
