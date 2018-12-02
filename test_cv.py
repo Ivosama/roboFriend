@@ -5,15 +5,15 @@ import MedianGBlur
 import Detect
 import sys
 
-cap = cv2.VideoCapture(0)
+#cap = cv2.VideoCapture(0)
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 blobDetector = Detect.BlobDetector()
 sys.setrecursionlimit(3000)
 
 while True:
-    ret, frame = cap.read()
-    #frame = cv2.imread("TestImages/Straight Outta CREATE 2.png", cv2.IMREAD_COLOR)
+    #ret, frame = cap.read()
+    frame = cv2.imread("TestImages/Straight Outta CREATE 2.png", cv2.IMREAD_COLOR)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     editedImage = np.zeros((frame.shape[0], frame.shape[1]), np.uint8)
 
@@ -30,5 +30,5 @@ while True:
         break
 
 
-cap.release()
+#cap.release()
 cv2.destroyAllWindows()

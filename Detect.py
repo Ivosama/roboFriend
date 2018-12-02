@@ -119,31 +119,31 @@ class BlobDetector:
 
 
     def checkConnectivity(self, y, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber):
-
+        interval = 250
         self.img[y, x] = 0
         self.objectImage[y, x] = objectNumber
 
-        if x + 1 < xMax:
+        if x + interval < xMax:
             right = self.img[y, x + 1]
             if right <= color + colorTH:
                 if right >= color - colorTH:
-                    self.checkConnectivity(y, yMin, yMax, x + 1, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y, yMin, yMax, x + interval, xMin, xMax, color, colorTH, objectNumber)
 
-        if y + 1 < yMax:
+        if y + interval < yMax:
             bottom = self.img[y + 1, x]
             if bottom <= color + colorTH:
                 if bottom >= color - colorTH:
-                    self.checkConnectivity(y + 1, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y + interval, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
 
-        if x - 1 > xMin:
+        if x - interval > xMin:
             left = self.img[y, x - 1]
             if left <= color + colorTH:
                 if left >= color - colorTH:
-                    self.checkConnectivity(y, yMin, yMax, x - 1, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y, yMin, yMax, x - interval, xMin, xMax, color, colorTH, objectNumber)
 
-        if y - 1 > yMin:
+        if y - interval > yMin:
             top = self.img[y - 1, x]
             if top <= color + colorTH:
                 if top >= color - colorTH:
-                    self.checkConnectivity(y - 1, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
+                    self.checkConnectivity(y - interval, yMin, yMax, x, xMin, xMax, color, colorTH, objectNumber)
 
