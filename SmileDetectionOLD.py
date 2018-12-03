@@ -304,5 +304,5 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
         deleteFromRight = 0
     if deleteFromLeft > rectW/3:
         deleteFromLeft = 0
-    smileDetected = rapidSmileCascade(src, rectX+deleteFromLeft, rectY, rectW-deleteFromRight, rectH, histogramMedian)
+    smileDetected, frownDetected = rapidSmileCascade(src, rectX+deleteFromLeft, rectY, rectW-deleteFromRight, rectH, histogramMedian)
     return smileDetected
