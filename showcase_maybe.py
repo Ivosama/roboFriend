@@ -9,6 +9,7 @@ import Detect
 import pygame
 import thresholding
 import Reactions
+import SmileDetectionEVENOLDER
 
 cap = cv2.VideoCapture(0)
 sys.setrecursionlimit(3000)
@@ -16,8 +17,8 @@ face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 awake = cv2.imread('TestImages/awake.jpg')
 sleep = cv2.imread('TestImages/sleeprobo.jpg')
 #
-r = Reactions.Reactions()
-r.initMem()
+#r = Reactions.Reactions()
+#r.initMem()
 
 
 
@@ -84,12 +85,14 @@ while True:
         mouthH = mouthMaxY - mouthMinY
 
         mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
-        if SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
-            r.updateMouth(1)
+
+        if SmileDetectionEVENOLDER.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
+            PyGame.happyFace()
+            print("true")
         else:
-            r.updateMouth(0)
-        r.updateBrow(browState)
-        r.getReaction()
+            PyGame.angryFace()
+            print("false")
+
 
 
     if cv2.waitKey(1) & 0xFF == ord('q'):

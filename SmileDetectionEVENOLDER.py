@@ -76,7 +76,10 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
     smileDetected = False
     bottomOfLip = src.shape[0]
     normalisedLighting = histogramMedian/127
-    #imageCopy = src.copy()
+    imageCopy = src.copy()
+    multiplier1 = 10
+    multiplier2 = 15
+    multiplier3 = 3
     #cv2.rectangle(imageCopy, (rectX, rectY), (rectX+searchRectW, rectY+searchRectH), (255, 0, 0), 1)
     #cv2.imshow("Size of search rectangle", imageCopy)
 
@@ -100,7 +103,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
             bottomLeftBottom = cumSumTable[y+searchRectH, x-searchRectW]
             bottomColourSum = (bottomRightBottom-topRightBottom-bottomLeftBottom+topLeftBottom)/searchRectArea
 
-            if (bottomColourSum-topColourSum) > normalisedLighting*40:
+            if (bottomColourSum-topColourSum) > normalisedLighting*multiplier1:
                 #print(topColourSum)
                 #print(bottomColourSum)
                 #cv2.rectangle(imageCopy, (x-searchRectW, y), (x, y), (255, 0, 0), 2)
@@ -127,7 +130,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
             bottomLeftBottom = cumSumTable[y+searchRectH, x-searchRectW]
             bottomColourSum = (bottomRightBottom-topRightBottom-bottomLeftBottom+topLeftBottom)/searchRectArea
 
-            if (topColourSum-bottomColourSum) < -normalisedLighting*30:
+            if (topColourSum-bottomColourSum) < -normalisedLighting*multiplier2:
                 searchRectX = int(x-(searchRectW/8)*5)
                 searchRectW = int(searchRectW/8)
                 searchRectX += searchRectW
@@ -147,7 +150,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
                 #cv2.rectangle(imageCopy, (searchRectX - searchRectW, y - searchRectH * 2),(searchRectX, y - searchRectH), (255, 0, 0), 2)
                 #cv2.imshow("Next Rectangle", imageCopy)
 
-                if bottomColourSum - topColourSum > normalisedLighting*6:
+                if bottomColourSum - topColourSum > normalisedLighting*multiplier3:
                     searchRectX = int(x-(originalSearchW/5))
                     #searchRectW = int(searchRectW / 8)
 
@@ -174,7 +177,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
                     #print(rightColourSum - topColourSum)
                     #print(leftColourSum - topColourSum)
 
-                    if abs(rightColourSum - topColourSum) > normalisedLighting*3 and abs(leftColourSum - topColourSum) > normalisedLighting*0.6 and y < bottomOfLip:
+                    if abs(rightColourSum - topColourSum) > normalisedLighting*2 and abs(leftColourSum - topColourSum) > normalisedLighting*0.6 and y < bottomOfLip:
                         #print("LUL")
                         smileDetected = True
 
