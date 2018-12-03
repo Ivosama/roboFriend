@@ -17,8 +17,8 @@ face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 awake = cv2.imread('TestImages/awake.jpg')
 sleep = cv2.imread('TestImages/sleeprobo.jpg')
 #
-r = Reactions.Reactions()
-r.initMem()
+#r = Reactions.Reactions()
+#r.initMem()
 
 
 
@@ -92,8 +92,6 @@ while True:
         else:
             PyGame.angryFace()
             print("false")
-
-        cv2.imshow("Smile", gray)
 
 
 
