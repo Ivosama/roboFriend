@@ -2,7 +2,7 @@ import PyGame
 
 class Reactions:
     import collections
-    memlen = 10  # robot's memory length for mouth and brow lists, first in first out unless specified otherwise (deque)
+    memlen = 5  # robot's memory length for mouth and brow lists, first in first out unless specified otherwise (deque)
     ma = collections.deque(maxlen=memlen)  # Mouth memory
     ba = collections.deque(maxlen=memlen)  # brow memory
     ml = ['smile', 'neutral', 'frown']  # list of mouths
