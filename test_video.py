@@ -33,7 +33,7 @@ face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 # allow the camera to warmup
 time.sleep(0.1)
 
-r = Reactions.Reacitions()
+r = Reactions.Reactions()
 r.initMem()
 
 
