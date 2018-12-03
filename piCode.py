@@ -7,7 +7,7 @@ import thresholding
 import Detect
 import sys
 import eyes
-import SmileDetectionEVENOLDER
+import SmileDetection
 import Eyebrows
 import PyGame
 import time
@@ -63,14 +63,19 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         mouthH = mouthMaxY - mouthMinY
 
         mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
-        if SmileDetectionEVENOLDER.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
+
+        isSmiling, isFrowning = SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX,
+                                                            mouthMaxY - mouthMinY)
+        if isSmiling:
             r.updateMouth(1)
+            r.updateBrow(browState)
+        elif isFrowning:
+            r.updateMouth(2)
             r.updateBrow(browState)
         else:
             r.updateMouth(0)
             r.updateBrow(browState)
-    r.getReaction()
-
+        r.getReaction()
     # show the frame
     cv2.imshow("Frame", image)
     key = cv2.waitKey(1) & 0xFF

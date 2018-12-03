@@ -15,7 +15,7 @@ import SmileDetectionEVENOLDER
 
 
 cap = cv2.VideoCapture(0)
-sys.setrecursionlimit(3000)
+sys.setrecursionlimit(5000)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 r = Reactions.Reactions()
 r.initMem()
@@ -44,13 +44,18 @@ while True:
 
         mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
 
-        if SmileDetectionEVENOLDER.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY):
+        isSmiling, isFrowning = SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY)
+        if isSmiling:
             r.updateMouth(1)
+            r.updateBrow(browState)
+        elif isFrowning:
+            r.updateMouth(2)
             r.updateBrow(browState)
         else:
             r.updateMouth(0)
             r.updateBrow(browState)
-    r.getReaction()
+        r.getReaction()
+
 
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
