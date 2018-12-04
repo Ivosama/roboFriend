@@ -125,18 +125,12 @@ class Reactions:
     def initMem(self):  # Fills memory with some face for initialization
         for x in range(self.memlen):
             self.updateMouth(0)
-            self.updateBrow(2)
+            self.updateBrow(0)
 
     def cheerUp(self):  # Triggers to try and cheer the user up with a little dance when they're sad
         print('wiggle')
         print('silly face')
 
-
-r = Reactions()
-for i in range(r.memlen):    # debug loop to fill mouth and brow memory with random inputs
-    r.debugRandFace()
-if not r.acting:
-    r.getReaction()
 
 """
 print('avg mouth:')
