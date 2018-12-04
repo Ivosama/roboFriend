@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import statistics
 
 def medianBlur(src, outputImage, searchDistance, faceX, faceY, faceW, faceH):
