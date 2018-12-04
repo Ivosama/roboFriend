@@ -25,7 +25,7 @@ stream = io.BytesIO()
 camera = PiCamera()
 camera.resolution = (640, 480)
 camera.color_effects = (128, 128)  # his sets the channels to capture only black and white
-camera.framerate = 32
+camera.framerate = 1
 rawCapture = PiRGBArray(camera, size=(640, 480))
 
 # Load a cascade file for detecting faces
