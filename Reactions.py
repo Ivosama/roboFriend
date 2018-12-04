@@ -106,11 +106,11 @@ class Reactions:
 
     def updateBrow(self, bi):  # update mouth using integer
         if bi == 0:
-            self.ma.append('b1')
+            self.ma.append('b1')  # This is neutral brow
         if bi == 1:
-            self.ma.append('b2')
+            self.ma.append('b2')  # This is happy brow
         if bi == 2:
-            self.ma.append('b3')
+            self.ma.append('b3')  # This is angry brows
 
     def debugRandFace(self):  # adds a random mouth and brow to memory
         import random
