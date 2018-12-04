@@ -23,10 +23,10 @@ stream = io.BytesIO()
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (640, 480)
-camera.color_effects = (128, 128)  # his sets the channels to capture only black and white
+camera.resolution = (1920, 1080)
+#camera.color_effects = (128, 128)  # his sets the channels to capture only black and white
 camera.framerate = 1
-rawCapture = PiRGBArray(camera, size=(640, 480))
+rawCapture = PiRGBArray(camera, size=(1920, 1080))
 
 # Load a cascade file for detecting faces
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
@@ -37,6 +37,7 @@ time.sleep(0.1)
 r = Reactions.Reactions()
 r.initMem()
 
+PyGame.neutralFace()
 
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -72,14 +73,16 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         if isSmiling:
             r.updateMouth(1)
             r.updateBrow(browState)
+            rawCapture.flush()
         elif isFrowning:
             r.updateMouth(2)
             r.updateBrow(browState)
+            rawCapture.flush()
         else:
             r.updateMouth(0)
             r.updateBrow(browState)
+            rawCapture.flush()
 
-        rawCapture.flush()
         r.getReaction()
 
     # clear the stream in preparation for the next frame
