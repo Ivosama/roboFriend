@@ -50,7 +50,7 @@ class Reactions:
                 return  # Replace each of these returns with separate functions, or more ifs with robot feelings
             elif b == 'b2':
                 print('frown, b2')
-                PyGame.angryFace()
+                PyGame.sadFace()
                 return
             elif b == 'b3':
                 print('frown, b3')
