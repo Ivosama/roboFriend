@@ -123,10 +123,11 @@ class Eyebrows:
                         leftState = 0
 
                 state = int((rightState + leftState) / 2)
-                print("Right ")
-                print(rightState)
-                print("Left ")
-                print(leftState)
+                print("Eyebrow detector state: " + str(state))
+                #print("Right ")
+                #print(rightState)
+                #print("Left ")
+                #print(leftState)
 
 
         return state
