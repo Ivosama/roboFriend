@@ -44,12 +44,15 @@ class Reactions:
         elif m == 'frown':
             if b == 'b1':
                 print('frown, b1')
+                PyGame.sadFace()
                 return  # Replace each of these returns with separate functions, or more ifs with robot feelings
             elif b == 'b2':
                 print('frown, b2')
+                PyGame.angryFace()
                 return
             elif b == 'b3':
                 print('frown, b3')
+                PyGame.angryFace()
                 return
         else:
             print('fuck')
