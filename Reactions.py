@@ -11,7 +11,9 @@ class Reactions:
     # If we have time, maybe use face memory to create reactions based on change
     # eg, if ma is [frown, frown, neutral, smile, frown, neutral, smile, smile, smile, neutral]
     # read it as a shift from frown to smile, and maybe react with a "yay i cheered you up"
-
+    # b1 = -  -
+    # b2 = /  \
+    # b3 = \  /
     def getReaction(self):
         m = self.getMouth()
         b = self.getBrow()
@@ -31,11 +33,11 @@ class Reactions:
         elif m == 'neutral':
             if b == 'b1':
                 print('neutral, b1')
-                PyGame.sadFace()
+                PyGame.neutralFace()
                 return  # Replace each of these returns with separate functions, or more ifs with robot feelings
             elif b == 'b2':
                 print('neutral, b2')
-                PyGame.neutralFace()
+                PyGame.sadFace()
                 return
             elif b == 'b3':
                 print('neutral, b3')
