@@ -31,7 +31,7 @@ while True:
 
     for (x, y, w, h) in faces:
         th = thresholding.getThDynamic(gray, y, y + h, x, x + w)
-        extraImg = thresholding.setTh(gray.copy(), y, y + h, x, x + w, th * 1.40)
+        extraImg = thresholding.setTh(gray.copy(), y, y + h, x, x + w, th - 20)
         extraImg = cv2.medianBlur(extraImg, 5)
         cv2.imshow("FUCK", extraImg)
         browState = eb.getStateOfBrows(extraImg, b, y, y + h, x, x + w, 0)

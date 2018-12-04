@@ -2,7 +2,7 @@ import PyGame
 
 class Reactions:
     import collections
-    memlen = 5  # robot's memory length for mouth and brow lists, first in first out unless specified otherwise (deque)
+    memlen = 3  # robot's memory length for mouth and brow lists, first in first out unless specified otherwise (deque)
     ma = collections.deque(maxlen=memlen)  # Mouth memory
     ba = collections.deque(maxlen=memlen)  # brow memory
     ml = ['smile', 'neutral', 'frown']  # list of mouths
@@ -20,41 +20,41 @@ class Reactions:
         print("getReaction return: ")
         if m == 'smile':
             if b == 'b1':
-                print('smile, b1')
+                print('HappyFace')
                 PyGame.happyFace()
                 return  # Replace each of these returns with separate functions, or more ifs with robot feelings
             elif b == 'b2':
-                print('smile, b2')
+                print('HappyFace')
                 PyGame.happyFace()
                 return
             elif b == 'b3':
-                print('smile, b3')
+                print('HappyFace')
                 PyGame.happyFace()
                 return
         elif m == 'neutral':
             if b == 'b1':
-                print('neutral, b1')
+                print('NeutralFace')
                 PyGame.neutralFace()
                 return  # Replace each of these returns with separate functions, or more ifs with robot feelings
             elif b == 'b2':
-                print('neutral, b2')
-                PyGame.sadFace()
+                print('neutralFace')
+                PyGame.neutralFace()
                 return
             elif b == 'b3':
-                print('neutral, b3')
+                print('AngryFace')
                 PyGame.angryFace()
                 return
         elif m == 'frown':
             if b == 'b1':
-                print('frown, b1')
+                print('SadFace')
                 PyGame.sadFace()
                 return  # Replace each of these returns with separate functions, or more ifs with robot feelings
             elif b == 'b2':
-                print('frown, b2')
+                print('SadFace')
                 PyGame.sadFace()
                 return
             elif b == 'b3':
-                print('frown, b3')
+                print('AngryFace')
                 PyGame.angryFace()
                 return
         else:
