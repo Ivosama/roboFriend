@@ -31,8 +31,9 @@ while True:
 
     for (x, y, w, h) in faces:
         th = thresholding.getThDynamic(gray, y, y + h, x, x + w)
-        extraImg = thresholding.setTh(gray.copy(), y, y + h, x, x + w, th / 3 + 10)
+        extraImg = thresholding.setTh(gray.copy(), y, y + h, x, x + w, th * 1.40)
         extraImg = cv2.medianBlur(extraImg, 5)
+        cv2.imshow("FUCK", extraImg)
         browState = eb.getStateOfBrows(extraImg, b, y, y + h, x, x + w, 0)
         cv2.rectangle(gray, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
 
@@ -46,6 +47,7 @@ while True:
 
         isSmiling, isFrowning = SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY)
         if isSmiling:
+            # print('Smile detected directly')
             r.updateMouth(1)
             r.updateBrow(browState)
         elif isFrowning:
@@ -55,6 +57,7 @@ while True:
             r.updateMouth(0)
             r.updateBrow(browState)
         r.getReaction()
+        print("--------------------")
 
 
     # Allow the program to be closed with the key, q

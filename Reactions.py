@@ -17,6 +17,7 @@ class Reactions:
     def getReaction(self):
         m = self.getMouth()
         b = self.getBrow()
+        print("getReaction return: ")
         if m == 'smile':
             if b == 'b1':
                 print('smile, b1')
@@ -63,30 +64,30 @@ class Reactions:
 
     def getMouth(self):  # Gets most common mouth entry from memory, can be changed later to list from most common to least.
         if self.ma.count('smile') >= self.ma.count('neutral') and self.ma.count('smile') >= self.ma.count('frown'):  # Priority for positive reactions over negative
-            print('smile')
+            #print('smile')
             return 'smile'
         elif self.ma.count('neutral') >= self.ma.count('frown') and self.ma.count('neutral') >= self.ma.count('smile'):
-            print('neutral')
+            #print('neutral')
             return 'neutral'
         elif self.ma.count('frown') >= self.ma.count('neutral') and self.ma.count('frown') >= self.ma.count('smile'):
-            print('frown')
+            #print('frown')
             return 'frown'
         else:
-            print('neutral')
+            #print('neutral')
             return 'neutral'
 
     def getBrow(self):  # 3 states of brow, /  \   -  -   \  /
         if self.ba.count('b1') >= self.ba.count('b2') and self.ba.count('b1') >= self.ba.count('b3'):
-            print('b1')
+            #print('b1')
             return 'b1'
         elif self.ba.count('b2') >= self.ba.count('b3') and self.ba.count('b2') >= self.ba.count('b1'):
-            print('b2')
+            #print('b2')
             return 'b2'
         elif self.ba.count('b3') >= self.ba.count('b2') and self.ba.count('b3') >= self.ba.count('b1'):
-            print('b3')
+            #print('b3')
             return 'b3'
         else:
-            print('b2')
+            #print('b2')
             return 'b2'
 
     def updateFace(self, m, b):  # use this to update expressions, m = mouth b = brow
@@ -104,6 +105,7 @@ class Reactions:
             self.ma.append('neutral')
         if mi == 2:
             self.ma.append('frown')
+        print("Mouth append: " + str(mi))
 
     def updateBrowString(self, b):  # update brow using string
         if b == 'b1' or 'b2' or 'b3':
@@ -111,11 +113,12 @@ class Reactions:
 
     def updateBrow(self, bi):  # update mouth using integer
         if bi == 0:
-            self.ma.append('b1')  # This is neutral brow
+            self.ba.append('b1')  # This is neutral brow
         if bi == 1:
-            self.ma.append('b2')  # This is happy brow
+            self.ba.append('b2')  # This is happy brow
         if bi == 2:
-            self.ma.append('b3')  # This is angry brows
+            self.ba.append('b3')  # This is angry brows
+        print("Brow append: " + str(bi))
 
     def debugRandFace(self):  # adds a random mouth and brow to memory
         import random
