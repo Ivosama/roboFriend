@@ -50,6 +50,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
+    PyGame.neutralFace()
+
     for (x, y, w, h) in faces:
         cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
         th = thresholding.getThDynamic(gray, y, y + h, x, x + w)
@@ -70,12 +72,17 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         if isSmiling:
             r.updateMouth(1)
             r.updateBrow(browState)
+            break
         elif isFrowning:
             r.updateMouth(2)
             r.updateBrow(browState)
+            break
         else:
             r.updateMouth(0)
             r.updateBrow(browState)
+            break
+
+        rawCapture.flush()
         r.getReaction()
 
     # clear the stream in preparation for the next frame
