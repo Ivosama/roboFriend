@@ -23,7 +23,7 @@ stream = io.BytesIO()
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (1920, 1080)
+camera.resolution = (1920, 1088)
 #camera.color_effects = (128, 128)  # his sets the channels to capture only black and white
 camera.framerate = 1
 rawCapture = PiRGBArray(camera, size=(1920, 1080))
