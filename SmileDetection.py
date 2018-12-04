@@ -71,36 +71,57 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
     This will show the rectangles that the program is testing and searching through
 
     """
+
     cumSumTable = src.cumsum(axis=0).cumsum(axis=1)
+    # Get the integral image (cumulative sum table)
+
     searchRectH = int(np.ceil(rectH/8))
     searchRectW = int(np.ceil((rectW/8)*6))
+    # Set the search height and width of the rectangle's that pass over the cumulative sum table
+
     smileDetected = False
     frownDetected = False
+    # Initialize the return values as false
+
     bottomOfLip = src.shape[0]
+    # Initialize the bottom of lip y co-ordinate as bottom of image
+
     normalisedLighting = histogramMedian/127
+    # Use the histogram median normalised to try to make it work in other lighting conditions
+
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+    # All of this is related to debugging, unhide the comments at each stage to see what's going on   #
+
     imageCopy = src.copy()
     #cv2.rectangle(imageCopy, (rectX, rectY), (rectX+searchRectW, rectY+searchRectH), (255, 0, 0), 1)
     #cv2.imshow("Size of search rectangle", imageCopy)
 
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
     for y in range(rectY+int(rectH/3), rectY+(rectH-searchRectH)-1):
         for x in range(rectX+searchRectW, rectX+rectW-1):
+
+            # First pass is to try to locate the bottom lip
+
             searchRectH = int(np.ceil(rectH / 8))
             searchRectW = int(np.ceil((rectW / 8) * 6))
             originalSearchW = searchRectW
             searchRectArea = searchRectH * searchRectW
-
+            # Set all the search rectangle transform properties
 
             bottomRightTop = cumSumTable[y, x]
             topRightTop = cumSumTable[y-searchRectH, x]
             topLeftTop = cumSumTable[y-searchRectH, x-searchRectW]
             bottomLeftTop = cumSumTable[y, x-searchRectW]
             topColourSum = (bottomRightTop-topRightTop-bottomLeftTop+topLeftTop)/searchRectArea
+            # Find general brightness of top rectangle
 
             bottomRightBottom = cumSumTable[y+searchRectH, x]
             topRightBottom = cumSumTable[y, x]
             topLeftBottom = cumSumTable[y, x-searchRectW]
             bottomLeftBottom = cumSumTable[y+searchRectH, x-searchRectW]
             bottomColourSum = (bottomRightBottom-topRightBottom-bottomLeftBottom+topLeftBottom)/searchRectArea
+            # Find general brightness of rectangle located searchRectH below the top one
 
             if (bottomColourSum-topColourSum) > normalisedLighting*30:
                 #print(topColourSum)
@@ -139,6 +160,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
             searchRectW = int(np.ceil((rectW / 8) * 6))
             originalSearchW = searchRectW
             searchRectArea = searchRectH * searchRectW
+            # Set rectangle search transform properties
 
             bottomRightTop = cumSumTable[y, x]
             topRightTop = cumSumTable[y - searchRectH, x]
@@ -152,9 +174,11 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
             bottomLeftBottom = cumSumTable[y + searchRectH, x - searchRectW]
             bottomColourSum = (bottomRightBottom - topRightBottom - bottomLeftBottom + topLeftBottom) / searchRectArea
 
+            # Uncomment these below to see behind the scenes
+
             # cv2.rectangle(imageCopy, (x-searchRectW, y - searchRectH),(x, y), (255, 0, 0), 2)
             # cv2.imshow("Next Rectangle", imageCopy)
-            #print(topColourSum-bottomColourSum)
+            # print(topColourSum-bottomColourSum)
 
             if (topColourSum - bottomColourSum) < -normalisedLighting * 18:
                 mouthStraightish = True
@@ -204,6 +228,9 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
                     #print(topColourSum-bottomColourSum)
                     #print(bottomColourSum-topColourSum)
                     if topColourSum - bottomColourSum > normalisedLighting*9.8:
+
+                        # Test for cheek muscle shadow
+
                         searchRectX = x
                         #searchRectW = int(searchRectW / 8)
 
@@ -328,7 +355,7 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
     :param rectY: Face cascade y
     :param rectW: Face cascade w
     :param rectH: Face cascade h
-    :return: True for if smile is detected, otherwise false
+    :return: smileDetected = True for if smile is detected, otherwise frownDetected = True for if frown detected
 
     First the area is median blurred (I tested originally with cv2 radius 3), then histogram equalized.
     Poul's dynamic thresholding applied
@@ -337,8 +364,13 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
 
     """
     src = cv2.medianBlur(src, 3)
-    #src = cv2.equalizeHist(src)
-    edited = thresholding.th(src, rectX, rectY, rectX+rectW, rectY+rectH, -45)
+    #srcCutout = src[rectY:rectY+rectH, rectX:rectX+rectW]
+    #srcCutout = cv2.equalizeHist(srcCutout)
+    #src[rectY:rectY + rectH, rectX:rectX + rectW] = srcCutout
+    src = cv2.equalizeHist(src)
+
+    #cv2.imshow("Specific Equalize Histogram", src)
+    #edited = thresholding.th(src, rectX, rectY, rectX+rectW, rectY+rectH, -45)
 
     histogram = hg.histogram(src)
     cumHist = ch.cumulative_histogram(histogram)
@@ -359,10 +391,15 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
         print(np.mean(histogramMedians))
 
     """
+    deleteFromLeft = 0
+    deleteFromRight = 0
+    """
     edited, deleteFromLeft, deleteFromRight = deleteWhiteSides(edited, rectX, rectY, rectW, rectH)
     if deleteFromRight > rectW/3:
         deleteFromRight = 0
     if deleteFromLeft > rectW/3:
         deleteFromLeft = 0
+    """
+
     smileDetected, frownDetected = rapidSmileCascade(src, rectX+deleteFromLeft, rectY, rectW-deleteFromRight, rectH, histogramMedian)
     return smileDetected, frownDetected
