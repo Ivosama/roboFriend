@@ -79,8 +79,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             r.updateMouth(0)
             r.updateBrow(browState)
 
-        rawCapture.flush()
         r.getReaction()
+        rawCapture.flush()
 
     # clear the stream in preparation for the next frame
     rawCapture.truncate(0)
