@@ -57,7 +57,7 @@ while True:
         r.getReaction()
 
 
-
+    # Allow the program to be closed with the key, q
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 

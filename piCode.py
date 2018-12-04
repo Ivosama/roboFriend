@@ -46,6 +46,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     eb = Eyebrows.Eyebrows()
     b = Detect.BlobDetector()
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    PyGame.screen.fill((0,0,0))
 
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
@@ -77,8 +78,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             r.updateBrow(browState)
         r.getReaction()
     # show the frame
-    cv2.imshow("Frame", image)
-    key = cv2.waitKey(1) & 0xFF
+    key = cv2.waitKey('q') & 0xFF
 
     # clear the stream in preparation for the next frame
     rawCapture.truncate(0)
