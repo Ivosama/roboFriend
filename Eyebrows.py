@@ -104,25 +104,25 @@ class Eyebrows:
                 rightState = 0 # Temp state of right eyebrow
                 leftState = 0 # Temp state of left eyebrow
 
-                if positions[right][1] < positions[rightCenter][1] - posTH: # If the outhermost dots are lower than the inner dots
-                    if positions[left][1] < positions[leftCenter][1] - posTH:
+                if positions[right][1] <= positions[rightCenter][1] - posTH: # If the outhermost dots are lower than the inner dots
+                    if positions[left][1] <= positions[leftCenter][1] - posTH:
                         rightState = 1 # Set state of brows to be happy
                         leftState = 1
 
-                if positions[right][1] > positions[rightCenter][1] + posTH: # If the outermost dots are higher than the inner dots
-                    if positions[left][1] > positions[leftCenter][1] + posTH:
+                if positions[right][1] >= positions[rightCenter][1] + posTH: # If the outermost dots are higher than the inner dots
+                    if positions[left][1] >= positions[leftCenter][1] + posTH:
                         rightState = 2 # Set state of brows to be angry
                         leftState = 2
 
-                if positions[right][1] <= positions[rightCenter][1] + posTH: # If brows are at same height
-                    if positions[right][1] >= positions[rightCenter][1] - posTH: # Or at least within posTH tolerances
+                if positions[right][1] < positions[rightCenter][1] + posTH: # If brows are at same height
+                    if positions[right][1] > positions[rightCenter][1] - posTH: # Or at least within posTH tolerances
                         rightState = 0 # Set state of brows as neutral
 
-                if positions[left][1] <= positions[leftCenter][1] + posTH: # Same as above
-                    if positions[left][1] >= positions[leftCenter][1] - posTH:
+                if positions[left][1] < positions[leftCenter][1] + posTH: # Same as above
+                    if positions[left][1] > positions[leftCenter][1] - posTH:
                         leftState = 0
 
-                state = int((rightState + leftState) / 2) # Combined state of brows
+                state = int((rightState + leftState) / 2)
                 print("Right ")
                 print(rightState)
                 print("Left ")
@@ -130,6 +130,18 @@ class Eyebrows:
 
 
         return state
+
+
+    def getBlobInSide(self, positions, side):
+
+        currentClosest = 0
+        closestDist = 1000
+
+        for i in range(0, len(positions)):
+                if side == 0:
+                    if positions[i][0] < closestDist:
+                        currentClosest = i
+                        closestDist = positions[0]
 
 
 ########## END OF CLASS ###########
