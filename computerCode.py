@@ -47,7 +47,7 @@ while True:
 
         isSmiling, isFrowning = SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY)
         if isSmiling:
-            # print('Smile detected directly')
+            print('Smile detected directly')
             r.updateMouth(1)
             r.updateBrow(browState)
         elif isFrowning:

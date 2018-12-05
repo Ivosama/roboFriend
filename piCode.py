@@ -15,9 +15,6 @@ import cv2
 import io
 import Reactions
 
-blobDetector = Detect.BlobDetector()
-sys.setrecursionlimit(5000)
-
 # Create a memory stream so photos doesn't need to be saved in a file
 stream = io.BytesIO()
 
@@ -26,7 +23,7 @@ camera = PiCamera()
 camera.resolution = (1920, 1088)
 #camera.color_effects = (128, 128)  # his sets the channels to capture only black and white
 camera.framerate = 1
-rawCapture = PiRGBArray(camera, size=(1920, 1080))
+rawCapture = PiRGBArray(camera, size=(1920, 1088))
 
 # Load a cascade file for detecting faces
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
@@ -36,8 +33,8 @@ time.sleep(0.1)
 
 r = Reactions.Reactions()
 r.initMem()
-
 PyGame.neutralFace()
+sys.setrecursionlimit(5000)
 
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -50,8 +47,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     PyGame.screen.fill((0,0,0))
 
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
-
-    PyGame.neutralFace()
 
     for (x, y, w, h) in faces:
         cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
