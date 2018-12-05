@@ -70,6 +70,26 @@ def neutralFace():
         f += 1.7
         pygame.display.update()
 
+
+def debugButtons():
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            key = event.key
+            if key == pygame.K_p:
+                happyFace()
+                #print("happy fucker")
+            if key == pygame.K_o:
+                sadFace()
+                #print("sad fucker")
+            if key == pygame.K_i:
+                neutralFace()
+                #print("neutral fucker")
+            if key == pygame.K_u:
+                angryFace()
+                #print("angry fucker")
+
+
+
 """
 while True:    # This needs to loop for the window to stay open
     for event in pygame.event.get():
