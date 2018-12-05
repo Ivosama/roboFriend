@@ -1,5 +1,3 @@
-import picamera
-import numpy as np
 import thresholding
 import Detect
 import sys
@@ -14,8 +12,8 @@ import threading
 # Camera settings go here
 imageWidth = 640
 imageHeight = 480
-frameRate = 4
-processingThreads = 4
+frameRate = 1
+processingThreads = 1
 
 # Shared values
 global running
@@ -23,15 +21,15 @@ global cap
 global frameLock
 global processorPool
 running = True
+frameLock = threading.Lock()
 
 # Setup the camera
 cap = cv2.VideoCapture(0)
-cap.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, imageWidth);
-cap.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
-cap.set(cv2.cv.CV_CAP_PROP_FPS, frameRate);
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, imageWidth);
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, imageHeight);
+cap.set(cv2.CAP_PROP_FPS, frameRate);
 if not cap.isOpened():
     cap.open()
-
 
 # Image processing thread, self-starting
 class ImageProcessor(threading.Thread):
@@ -75,14 +73,13 @@ class ImageProcessor(threading.Thread):
         #loads the face cascade
         faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
-        #fills the screen
         PyGame.screen.fill((0, 0, 0))
 
         for (x, y, w, h) in faces:
             th = thresholding.getThDynamic(gray, y, y + h, x, x + w)
             extraImg = thresholding.setTh(gray.copy(), y, y + h, x, x + w, th - 20)
             extraImg = cv2.medianBlur(extraImg, 5)
-            cv2.imshow("FUCK", extraImg)
+            #cv2.imshow("FUCK", extraImg)
             browState = eb.getStateOfBrows(extraImg, b, y, y + h, x, x + w, 0)
             cv2.rectangle(gray, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
 
@@ -146,9 +143,9 @@ class ImageCapture(threading.Thread):
         print
         'Capture thread terminated'
 
-
 # Create some threads for processing and frame grabbing
-processorPool = [ImageProcessor(i + 1) for i in range(processingThreads)]
+processorPool = [ImageProcessor(i + 1) for i in range(processingThreads)
+                 ]
 allProcessors = processorPool[:]
 captureThread = ImageCapture()
 
@@ -195,3 +192,4 @@ captureThread.join()
 
 # Cleanup the camera object
 cap.release()
+
