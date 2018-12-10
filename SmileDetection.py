@@ -4,6 +4,7 @@ import numpy as np
 import cum_hist as ch
 import histogram as hg
 import thresholding
+import EqualizeHistogram as eh
 
 def getHistogramMedian(src):
     histogram = hg.histogram(src)
@@ -367,7 +368,12 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
     #srcCutout = src[rectY:rectY+rectH, rectX:rectX+rectW]
     #srcCutout = cv2.equalizeHist(srcCutout)
     #src[rectY:rectY + rectH, rectX:rectX + rectW] = srcCutout
-    src = cv2.equalizeHist(src)
+    opencvEqHist = src.copy()
+    opencvEqHist = cv2.equalizeHist(opencvEqHist)
+    src = eh.equalizeHist(src)
+
+    cv2.imshow("OpenCV", opencvEqHist)
+    cv2.imshow("Homemade", src)
 
     #cv2.imshow("Specific Equalize Histogram", src)
     #edited = thresholding.th(src, rectX, rectY, rectX+rectW, rectY+rectH, -45)
