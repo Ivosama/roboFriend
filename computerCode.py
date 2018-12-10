@@ -20,11 +20,14 @@ face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 r = Reactions.Reactions()
 r.initMem()
 
+eb = Eyebrows.Eyebrows()
+b = Detect.BlobDetector()
+
 while True:
     ret, frame = cap.read()
+    print(len(frame))
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    eb = Eyebrows.Eyebrows()
-    b = Detect.BlobDetector()
+
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
     PyGame.screen.fill((0, 0, 0))
@@ -47,7 +50,7 @@ while True:
 
         isSmiling, isFrowning = SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY)
         if isSmiling:
-            # print('Smile detected directly')
+            #print('Smile detected directly')
             r.updateMouth(1)
             r.updateBrow(browState)
         elif isFrowning:

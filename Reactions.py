@@ -16,51 +16,41 @@ class Reactions:
     # b3 = \  /
     def getReaction(self):
         m = self.getMouth()
-        b = self.getBrow()
         print("getReaction return: ")
         if m == 'smile':
-            if b == 'b1':
-                print('HappyFace')
-                PyGame.happyFace()
-                return  # Replace each of these returns with separate functions, or more ifs with robot feelings
-            elif b == 'b2':
-                print('HappyFace')
-                PyGame.happyFace()
-                return
-            elif b == 'b3':
-                print('HappyFace')
-                PyGame.happyFace()
-                return
-        elif m == 'neutral':
-            if b == 'b1':
-                print('NeutralFace')
-                PyGame.neutralFace()
-                return  # Replace each of these returns with separate functions, or more ifs with robot feelings
-            elif b == 'b2':
-                print('neutralFace')
-                PyGame.neutralFace()
-                return
-            elif b == 'b3':
-                print('AngryFace')
-                PyGame.angryFace()
-                return
-        elif m == 'frown':
-            if b == 'b1':
-                print('SadFace')
-                PyGame.sadFace()
-                return  # Replace each of these returns with separate functions, or more ifs with robot feelings
-            elif b == 'b2':
-                print('SadFace')
-                PyGame.sadFace()
-                return
-            elif b == 'b3':
-                print('AngryFace')
-                PyGame.angryFace()
-                return
+            print('HappyFace')
+            PyGame.happyFace()
+            return  # Replace each of these returns with separate functions, or more ifs with robot feelings
         else:
-            print('fuck')
-            print(self.getMouth)
-            print(self.getBrow)
+            b = self.getBrow()
+            if m == 'neutral':
+                if b == 'b1':
+                    print('NeutralFace')
+                    PyGame.neutralFace()
+                    return  # Replace each of these returns with separate functions, or more ifs with robot feelings
+                elif b == 'b2':
+                    print('neutralFace')
+                    PyGame.neutralFace()
+                    return
+                elif b == 'b3':
+                    print('AngryFace')
+                    PyGame.angryFace()
+                    return
+            elif m == 'frown':
+                if b == 'b1':
+                    print('SadFace')
+                    PyGame.sadFace()
+                    return  # Replace each of these returns with separate functions, or more ifs with robot feelings
+                elif b == 'b2':
+                    print('SadFace')
+                    PyGame.sadFace()
+                    return
+                elif b == 'b3':
+                    print('AngryFace')
+                    PyGame.angryFace()
+                    return
+            else:
+                print('error finding reaction')
 
     def getMouth(self):  # Gets most common mouth entry from memory, can be changed later to list from most common to least.
         if self.ma.count('smile') >= self.ma.count('neutral') and self.ma.count('smile') >= self.ma.count('frown'):  # Priority for positive reactions over negative
