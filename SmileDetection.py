@@ -5,6 +5,7 @@ import cum_hist as ch
 import histogram as hg
 import thresholding
 import EqualizeHistogram as eh
+import MedianGBlur
 
 def getHistogramMedian(src):
     histogram = hg.histogram(src)
@@ -364,15 +365,19 @@ def mouthSmiling(src, rectX, rectY, rectW, rectH):
     Then a cascade is run on the resulting dimensions
 
     """
-    src = cv2.medianBlur(src, 3)
+    #src = cv2.medianBlur(src, 3)
+    medianBlurred = src.copy()
+    medianBlurred = MedianGBlur.medianBlur(src, medianBlurred, 1, rectX, rectY, rectW, rectH)
+    src = medianBlurred
     #srcCutout = src[rectY:rectY+rectH, rectX:rectX+rectW]
     #srcCutout = cv2.equalizeHist(srcCutout)
     #src[rectY:rectY + rectH, rectX:rectX + rectW] = srcCutout
-    opencvEqHist = src.copy()
-    opencvEqHist = cv2.equalizeHist(opencvEqHist)
-    src = eh.equalizeHist(src)
+    #opencvEqHist = src.copy()
+    #opencvEqHist = cv2.equalizeHist(opencvEqHist)
+    #src = eh.equalizeHist(src)
+    #src = opencvEqHist
 
-    cv2.imshow("OpenCV", opencvEqHist)
+    #cv2.imshow("OpenCV", opencvEqHist)
     cv2.imshow("Homemade", src)
 
     #cv2.imshow("Specific Equalize Histogram", src)
