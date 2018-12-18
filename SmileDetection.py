@@ -134,7 +134,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
 
     for y in range(rectY+int(rectH/3), rectY+(rectH-searchRectH)-1):
         for x in range(rectX+searchRectW, rectX+rectW-1):
-            
+
             searchRectH = int(np.ceil(rectH / 8))
             searchRectW = int(np.ceil((rectW / 8) * 6))
             originalSearchW = searchRectW
