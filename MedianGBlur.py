@@ -1,7 +1,5 @@
 import cv2
 import numpy as np
-#import matplotlib.pyplot as plt
-import statistics
 
 def medianBlur(src, outputImage, searchDistance, faceX, faceY, faceW, faceH):
     # swag boi dolla dolla bill$ holla at me
@@ -16,9 +14,7 @@ def medianBlur(src, outputImage, searchDistance, faceX, faceY, faceW, faceH):
                 for searchX in range(x+searchDistance+1-startX):
                     surroundingPixels.append(src[startY + searchY, startX + searchX])
 
-            #outputImage[y, x] = np.median(surroundingPixels)
-
-            outputImage[y, x] = statistics.median(surroundingPixels);
+            outputImage[y, x] = np.median(surroundingPixels);
 
 
     return outputImage
