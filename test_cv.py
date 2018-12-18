@@ -10,7 +10,6 @@ import PyGame
 import cum_hist as ch
 import histogram as hg
 import FrownDetection
-import SmileDetectionOLD
 
 eyes = eyes.Eyes()
 

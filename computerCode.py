@@ -11,7 +11,6 @@ import Detect
 import pygame
 import thresholding
 import Reactions
-import SmileDetectionEVENOLDER
 
 
 cap = cv2.VideoCapture(0)
