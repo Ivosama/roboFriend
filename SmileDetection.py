@@ -134,30 +134,7 @@ def rapidSmileCascade(src, rectX, rectY, rectW, rectH, histogramMedian):
 
     for y in range(rectY+int(rectH/3), rectY+(rectH-searchRectH)-1):
         for x in range(rectX+searchRectW, rectX+rectW-1):
-            """
-            searchRectH = int(np.ceil(rectH / 8))
-            searchRectW = int(np.ceil((rectW / 8) * 6))
-            originalSearchW = searchRectW
-            searchRectArea = searchRectH * searchRectW
-
-
-            bottomRightTop = cumSumTable[y, x]
-            topRightTop = cumSumTable[y-searchRectH, x]
-            topLeftTop = cumSumTable[y-searchRectH, x-searchRectW]
-            bottomLeftTop = cumSumTable[y, x-searchRectW]
-            topColourSum = (bottomRightTop-topRightTop-bottomLeftTop+topLeftTop)/searchRectArea
-
-            bottomRightBottom = cumSumTable[y+searchRectH, x]
-            topRightBottom = cumSumTable[y, x]
-            topLeftBottom = cumSumTable[y, x-searchRectW]
-            bottomLeftBottom = cumSumTable[y+searchRectH, x-searchRectW]
-            bottomColourSum = (bottomRightBottom-topRightBottom-bottomLeftBottom+topLeftBottom)/searchRectArea
-
-            #cv2.rectangle(imageCopy, (x - searchRectW, y - searchRectH), (x, y), (255, 0, 0), 2)
-            #cv2.imshow("Next Rectangle", imageCopy)
             
-            if (topColourSum-bottomColourSum) < -normalisedLighting*30:
-            """
             searchRectH = int(np.ceil(rectH / 8))
             searchRectW = int(np.ceil((rectW / 8) * 6))
             originalSearchW = searchRectW
