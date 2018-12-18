@@ -10,6 +10,8 @@ import PyGame
 import cum_hist as ch
 import histogram as hg
 import FrownDetection
+import SmileDetectionOLD
+import SmileDetectionEVENOLDER
 
 eyes = eyes.Eyes()
 
@@ -23,7 +25,7 @@ while True:
     ret, frame = cap.read()
     #frame = cv2.imread("TestImages/Straight Outta CREATE 2.png", cv2.IMREAD_COLOR)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    gray = cv2.imread("TestImages/NightSmile.png", cv2.IMREAD_GRAYSCALE)
+    #gray = cv2.imread("TestImages/Peter.png", cv2.IMREAD_GRAYSCALE)
     editedImage = np.zeros((gray.shape[0], gray.shape[1]), np.uint8)
 
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
@@ -42,7 +44,7 @@ while True:
 
         mouthYPosition = int(mouthMinY + (mouthH / 8) * 5)
         isSmiling, isFrowning = SmileDetection.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY)
-        #isSmiling = SmileDetectionOLD.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY)
+        #isSmiling = SmileDetectionEVENOLDER.mouthSmiling(gray, mouthMinX, mouthMinY, mouthMaxX - mouthMinX, mouthMaxY - mouthMinY)
         if isSmiling:
             cv2.imshow("Smile", gray)
             PyGame.happyFace()
@@ -63,7 +65,7 @@ while True:
 
     #print(SmileDetection.getHistogramMedian(gray))
 
-    cv2.imshow("imshow", gray)
+    #cv2.imshow("imshow", gray)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
